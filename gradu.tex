@@ -1,0 +1,84 @@
+\nonstopmode
+% \batchmode jos et halua n‰hd‰
+\documentclass[12pt,a4paper,finnish]{article}
+
+%%% T‰m‰ on t‰m‰n tiedoston versio ajanhetken‰ 2008-02-13.
+%%% S‰‰t‰j‰-‰ss‰n on hyv‰ muistaa p‰ivitt‰‰ myˆs p‰iv‰ys.
+
+\usepackage{natbib}
+\bibpunct{(}{)}{;}{a}{,}{,}
+
+\usepackage[T1]{fontenc}
+\usepackage[latin1]{inputenc}
+\usepackage{babel}
+
+% \usepackage{graphicx}
+% tai \usepackage{graphics}
+% kuvatiedostojen liitt‰miseksi
+
+\begin{document}
+
+\parskip 2mm
+\parindent 0mm
+
+\begin{titlepage}
+  \setlength{\parindent}{0mm}
+  \sloppy
+  \large \textsc{Helsingin Yliopisto \\
+                 Yleisen kielitieteen laitos \\
+                 Kieliteknologia}
+  \vspace{5mm}
+
+  \hrule height3pt
+  \vspace{20mm}
+
+  \begin{center}
+    \large Pro gradu -tutkielma
+    \linebreak \vfill   
+
+    \huge \textbf{Tutkielman nimi}
+    \vspace{20mm}
+
+    \Large Tekij‰n Nimi \linebreak
+    \normalsize 0000000  % opiskelijanumero
+    \vfill
+
+  \end{center}
+  \hrule height2pt
+  \vspace{15mm}
+
+  Ohjaaja: Ohjaajan Nimi
+  \hfill
+  99.99.9999     % p‰iv‰m‰‰r‰ (esim. 2.2.2002)
+\end{titlepage}
+
+\tableofcontents
+
+\pagebreak
+
+%%% Oma teksti t‰m‰n j‰lkeen.
+%%% Tyhj‰ rivi kappalten v‰liin.
+%%% LaTeX varaa mm. merkit & $ & % \ { } [ ] omiin tarkoituksiinsa.
+
+\section{Johdanto}
+
+Tavallista teksti‰, jonka pit‰isi olla luettavaa. Tavallinen viittaus
+\citep{antworth}. Ja lis‰‰ tavallista teksti‰. Lyhyt viittaus: Edward
+Barton sanoo \citeyearpar{barton87}, ett‰ asiahan ei ole noin.
+
+Toisessa kappaleessa kerrotaan lis‰‰. T‰ydellinen viittaus teokseen,
+jolla on useampi tekij‰ \citep{barton87} n‰ytt‰‰ viel‰ t‰ydellisemp‰n‰
+t‰lt‰: \citep*{barton87}.
+
+\subsection{Sivumennen}
+
+Huomaa, ett‰ l‰hde ei tule l‰hdeluetteloon, ellei siihen jotenkin
+viitata.
+
+%%% Oma teksti ennen t‰t‰.
+
+\bibliographystyle{plainnat}
+
+\bibliography{gradu}  % viittaa tiedostoon gradu.bib
+
+\end{document}
