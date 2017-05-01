@@ -1,21 +1,32 @@
 \nonstopmode
 % \batchmode jos et halua n‰hd‰
-\documentclass[12pt,a4paper,finnish]{article}
+\documentclass[12pt,a4paper,finnish,margin=2in]{article}
+\usepackage[margin = 1.75in,bottom=1in,top=1.25in]{geometry}
+\linespread{1.2}
+%\usepackage{lineno}
+%\linenumbers
 
 %%% T‰m‰ on t‰m‰n tiedoston versio ajanhetken‰ 2008-02-13.
 %%% S‰‰t‰j‰-‰ss‰n on hyv‰ muistaa p‰ivitt‰‰ myˆs p‰iv‰ys.
 
-\usepackage{natbib}
-\bibpunct{(}{)}{;}{a}{,}{,}
+%\usepackage[authoryear]{natbib}
+\usepackage[
+backend=biber,
+style=authoryear,
+citestyle=authoryear-comp,
+sorting=ynt,
+natbib=true
+]{biblatex}
+\addbibresource{gradu.bib}
+%\bibpunct{(}{)}{;}{a}{,}{,}
 
 \usepackage[T1]{fontenc}
 \usepackage[latin1]{inputenc}
-\usepackage{babel}
+\usepackage[finnish]{babel}
 
 % \usepackage{graphicx}
 % tai \usepackage{graphics}
 % kuvatiedostojen liitt‰miseksi
-
 \begin{document}
 
 \parskip 2mm
@@ -62,14 +73,9 @@
 
 \section{Johdanto}
 
-Tavallista teksti‰, jonka pit‰isi olla luettavaa. Tavallinen viittaus
-\citep{antworth}. Ja lis‰‰ tavallista teksti‰. Lyhyt viittaus: Edward
-Barton sanoo \citeyearpar{barton87}, ett‰ asiahan ei ole noin.
+Termosf‰‰ri on maapallon ilmakeh‰n ainoa l‰hiavaruuteen ulottuva osa. Siksi termosf‰‰rin tilan tunteminen on ensiarvoisen t‰rke‰‰ suunniteltaessa ja toteutettaessa matalan maan kiertoradan missioita (l‰hde). 
 
-Toisessa kappaleessa kerrotaan lis‰‰. T‰ydellinen viittaus teokseen,
-jolla on useampi tekij‰ \citep{barton87} n‰ytt‰‰ viel‰ t‰ydellisemp‰n‰
-t‰lt‰: \citep*{barton87}.
-
+Noin sadan kilometrin korkeudella olevan mesopaussin \citep{Xu_2007} yl‰puolella sijaitseva termosf‰‰ri on ilmakeh‰n kerroksista kenties v‰hiten tunnettu. 
 \subsection{Sivumennen}
 
 Huomaa, ett‰ l‰hde ei tule l‰hdeluetteloon, ellei siihen jotenkin
@@ -77,8 +83,11 @@ viitata.
 
 %%% Oma teksti ennen t‰t‰.
 
-\bibliographystyle{plainnat}
+%\bibliography{gradu}
+%\bibliographystyle{unsrtnat}
+%\nocite{*}
+\printbibliography
 
-\bibliography{gradu}  % viittaa tiedostoon gradu.bib
+%\bibliography{gradu}  % viittaa tiedostoon gradu.bib
 
 \end{document}
