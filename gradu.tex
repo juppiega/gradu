@@ -14,7 +14,7 @@
 backend=biber,
 style=authoryear,
 citestyle=authoryear-comp,
-sorting=ynt,
+sorting=nyt,
 natbib=true
 ]{biblatex}
 \addbibresource{gradu.bib}
@@ -73,9 +73,16 @@ natbib=true
 
 \section{Johdanto}
 
-Termosf‰‰ri on maapallon ilmakeh‰n ainoa l‰hiavaruuteen ulottuva osa. Siksi termosf‰‰rin tilan tunteminen on ensiarvoisen t‰rke‰‰ suunniteltaessa ja toteutettaessa matalan maan kiertoradan missioita (l‰hde). 
+Termosf‰‰ri on planeettamme ilmakeh‰n ainoa l‰hiavaruuteen saakka ulottuva kerros. Tieteellisen mielenkiinnon lis‰ksi termosf‰‰rin k‰ytt‰ytymisen parempi ymm‰rt‰minen on t‰rke‰‰ suunniteltaessa ja toteutettaessa l‰hiavaruuden satelliittitoimintaa, sill‰ termosf‰‰rist‰ aiheutuva ilmanvastusvoima on suurin virhel‰hde ennustettaessa matalan kiertoradan satelliittien sijaintia \citep{Doornbos_2007}. 
 
-Noin sadan kilometrin korkeudella olevan mesopaussin \citep{Xu_2007} yl‰puolella sijaitseva termosf‰‰ri on ilmakeh‰n kerroksista kenties v‰hiten tunnettu. 
+Termosf‰‰rin ymm‰rt‰miseksi on laadittu useita virtaus- ja elektrodynamiikan yht‰lˆt ratkaisevia fysikaalisia malleja (l‰hde). Rakenteeltaan mallit muistuttavat alailmakeh‰ss‰ k‰ytett‰vi‰ s‰‰- ja ilmastomalleja, mutta vaikka ne ovat merkitt‰v‰sti lis‰nneet tietoa yl‰ilmakeh‰n prosesseista ja kytkennˆist‰, eiv‰t niill‰ laskettavat ennusteet kovinkaan hyvin vastaa termosf‰‰rist‰ teht‰vi‰ havaintoja \citep{Shim_2014}. T‰m‰n vuoksi satelliittien ratelaskelmissa ei fysikaalisia malleja k‰ytet‰, vaan sen sijaan hyˆdynnet‰‰n puoli-empiirisi‰ malleja, jotka kuvaavat termosf‰‰rin keskim‰‰r‰ist‰ kolmiulotteista l‰mpˆtila- ja tiheysjakaumaa geofysikaalisten parametrien funktiona. 
+
+Vaikka puoli-empiiriset mallit tuottavat fysikaalisia malleja tarkemman arvion yl‰ilmakeh‰n satelliitteihin kohdistamasta ilmanvastuksesta, liittyy niidenkin k‰yttˆˆn suuria virheit‰, koska termosf‰‰rin todellinen tila ja empiirisen mallin ennustama keskim‰‰r‰inen tila poikkevat usein toisistaan. Niin fysikaalisten kuin empiiristen mallien ennustusvirhett‰ on yritetty pienent‰‰ korjaamalla mallin alkutilaa sellaiseksi, ett‰ se vastaa paremmin havaintoja (pari tiegcm EnKF + Doornbos). T‰m‰n niin kutsutun data-assimilaation avulla mallien ja havaintojen v‰list‰ virhett‰ on etenkin lyhyill‰ ennustusajoilla saatu merkitt‰v‰sti pienennetty‰, mutta on kuitenkin ep‰selv‰‰, kuinka paljon ennusteita voidaan parantaa alkutilan paremmalla m‰‰rityksell‰. 
+
+Toisin kuin alailmakeh‰ss‰, termosf‰‰rist‰ teht‰vien ennusteiden ep‰varmuus liittyy paljon enemm‰n ep‰varmuuteen termosf‰‰rin tilaa ajavissa pakotteissa \citep{mannucci_2016}. Yl‰ilmakeh‰n t‰rkein energianl‰hde on auringosta tuleva lyhytaaltoinen E- ja FUV-s‰teily, jonka s‰teilyteho voi vaihdella sadoilla prosenteilla minuuttien ja tuntien aikaskaalassa \citep[esim.][]{Tsurutani_2005}. Lis‰ksi t‰m‰ voimakas s‰teily ionisoi osan termosf‰‰rin kaasusta muodostaen alueelle niin kutsutun ionosf‰‰rin, jonka liike yl‰ilmakeh‰n s‰hkˆ- ja magneettikenttien mukaan vaikuttaa myˆs neutraalin kaasun virtaukseen. T‰m‰n ionosf‰‰ri-termosf‰‰ri -kytkenn‰n ja auringon lyhytaaltoisen s‰teilyn muutokset ovat vaikeasti ennustettavissa, mutta voivat vaikuttaa termosf‰‰rin massatiheyteen kymmenill‰ tai jopa sadoilla prosenteilla \citep[esim.][]{emmert_2015}. 
+
+
+
 \subsection{Sivumennen}
 
 Huomaa, ett‰ l‰hde ei tule l‰hdeluetteloon, ellei siihen jotenkin
@@ -87,6 +94,7 @@ viitata.
 %\bibliographystyle{unsrtnat}
 %\nocite{*}
 \printbibliography
+
 
 %\bibliography{gradu}  % viittaa tiedostoon gradu.bib
 
