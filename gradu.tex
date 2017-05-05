@@ -3,6 +3,10 @@
 \documentclass[12pt,a4paper,finnish,margin=2in]{article}
 \usepackage[margin = 1.75in,bottom=1in,top=1.25in]{geometry}
 \linespread{1.2}
+
+\usepackage{fixltx2e}
+\usepackage{amsmath}
+\usepackage{graphicx}
 %\usepackage{lineno}
 %\linenumbers
 
@@ -79,16 +83,93 @@ Termosfäärin ymmärtämiseksi on laadittu useita virtaus- ja elektrodynamiikan yht
 
 Vaikka puoli-empiiriset mallit tuottavat fysikaalisia malleja tarkemman arvion yläilmakehän satelliitteihin kohdistamasta ilmanvastuksesta, liittyy niidenkin käyttöön suuria virheitä, koska termosfäärin todellinen tila ja empiirisen mallin ennustama keskimääräinen tila poikkevat usein toisistaan. Niin fysikaalisten kuin empiiristen mallien ennustusvirhettä on yritetty pienentää korjaamalla mallin alkutilaa sellaiseksi, että se vastaa paremmin havaintoja (pari tiegcm EnKF + Doornbos). Tämän niin kutsutun data-assimilaation avulla mallien ja havaintojen välistä virhettä on etenkin lyhyillä ennustusajoilla saatu merkittävästi pienennettyä, mutta on kuitenkin epäselvää, kuinka paljon ennusteita voidaan parantaa alkutilan paremmalla määrityksellä. 
 
-Toisin kuin alailmakehässä, termosfääristä tehtävien ennusteiden epävarmuus liittyy hyvin paljon epävarmuuteen termosfäärin tilaa ajavissa pakotteissa \citep{mannucci_2016}. Yläilmakehän tärkein energianlähde on auringosta tuleva lyhytaaltoinen E- ja FUV-säteily, jonka säteilyteho voi vaihdella sadoilla prosenteilla minuuttien ja tuntien aikaskaalassa \citep[esim.][]{Tsurutani_2005}. Lisäksi tämä voimakas säteily ionisoi osan termosfäärin kaasusta muodostaen alueelle niin kutsutun ionosfäärin, jonka liike yläilmakehän sähkö- ja magneettikenttien mukaan vaikuttaa myös neutraalin kaasun virtaukseen. Tämän ionosfääri-termosfääri -kytkennän ja auringon lyhytaaltoisen säteilyn muutokset ovat vaikeasti ennustettavissa, mutta voivat vaikuttaa termosfäärin massatiheyteen kymmenillä tai jopa sadoilla prosenteilla \citep[esim.][]{emmert_2015}. Näin ollen tilanteissa, joissa pakotteen aikakehitykseen liittyyy hyvin suuri epävarmuus, ei alkutilan tarkkakaan määritys auta tuottamaan laadukkaita ennusteita yläilmakehän tilasta \citep{chen_2016}.
+Toisin kuin alailmakehässä, termosfääristä tehtävien ennusteiden epävarmuus liittyy hyvin paljon epävarmuuteen termosfäärin tilaa ajavissa pakotteissa \citep{mannucci_2016}. Yläilmakehän tärkein energianlähde on auringosta tuleva lyhytaaltoinen E- ja FUV-säteily, jonka säteilyteho voi vaihdella sadoilla prosenteilla minuuttien ja tuntien aikaskaalassa \citep[esim.][]{Tsurutani_2005}. Lisäksi tämä voimakas säteily ionisoi osan termosfäärin kaasusta muodostaen alueelle niin kutsutun ionosfäärin, jonka liike yläilmakehän sähkö- ja magneettikenttien mukaan vaikuttaa myös neutraalin kaasun virtaukseen. Tämän ionosfääri-termosfääri -kytkennän ja auringon lyhytaaltoisen säteilyn muutokset ovat vaikeasti ennustettavissa, mutta voivat vaikuttaa termosfäärin massatiheyteen kymmenillä tai jopa sadoilla prosenteilla \citep[esim.][]{emmert_2015}. Näin ollen tilanteissa, joissa pakotteen aikakehitykseen liittyy hyvin suuri epävarmuus, ei alkutilan tarkkakaan määritys auta tuottamaan laadukkaita ennusteita yläilmakehän tilasta \citep{chen_2016}.
+
+Tästä syystä tässä tutkielmassa keskitytään tarkastelemaan data-assimilaation suorituskykyä aikana, jolloin termosfääriin kohdistuu voimakkaita ajan suhteen muuttuvia pakotteita (geomagneettinen ja auringon aktiivisuus ovat suuria). Data-assimilaation ennustusmallina käytetään Ilmatieteen laitoksella kehitettyä uutta puoli-empiiristä Iipponen-Laitinen -mallia (IL). Assimiloitavana datana toimii Pohjois-Amerikan ilmapuolustuskomentokeskuksen (NORAD) niin sanottu kaksirivinen elementtidata maata kirtävistä kappaleista (lähde), jota on useasti hyödynnetty yläilmakehän data-assimilaatiota käsittelevissä tutkimuksissa (HASDM + Doornbos). 
+
+Tässä tutkielmassa data-assimilaatio suoritetaan Kalmanin kokonaisuussuotimen (englanniksi \textit{Ensemble Kalman Filter}, EnKF) avulla (lähde). Menettely poikkeaa aiemmista tutkimuksista (esim. Doornbos) siinä, miten se käsittelee mallin ennustetta muodostaessaan arviota yläilmakehän todennäköisimmästä tilasta. Aiemmin todennäköisimmän tilan arvio on määritetty ainoastaan interpoloimalla havaintoaineistoa, mutta yhdistämällä mallin ennusteen ja havainnot, EnKF kykenee tuottamaan arvion yläilmakehän tilasta, joka todennäköisimmin vastaa järjestelmän todellista tilaa. 
+
+Työn keskeiset tutkimuskysymykset ovat:
+\begin{enumerate}
+\item Tarkentaako EnKF:n avulla tuotettu ilmakehän analyysi IL-mallin kuvausta keski- ja ylätermosfäärin massatiheydestä?
+\item Tarkentaako analyysi kolmen päivän ennusteita yläilmakehän tilasta, mikäli pakotetekijöiden aikakehitys tunnetaan tarkkaan?
+\end{enumerate}
+
+Keskeisin yksittäinen parametri arvioitaessa yläilmakehämallien suorituskykyä on tiheysennusteiden ja -havaintojen välinen neliöllinen keskivirhe, sillä se kuvaa hyvin satelliitin kiertoradan ennustuksessa tehtävää etäisyysvirhettä (lähde). Tässä työssä sitä käytetään arvioimaan, tarkentaako data-assimilaatio yläilmakehän tiheydestä tehtäviä arvioita verrattuna IL-malliin, johon dataa ei ole koskaan assimiloitu. Vertailun havaintoaineistona käytetään aina dataa, jota data-assimilaatio-järjestelmässä ei ole käytetty.
+
+Työn kolmessa ensimmäisessä luvussa annetaan tulosten ja johtopäätösten ymmärtämiseksi tarvittavat tiedot IL-mallista, NORAD:n kaksirivielementeistä, sekä Kalmanin kokonaisuussuotimesta. Luku 5 esittää data-assimilaation tulokset. Luku 6 esittää tulosten perusteella johtopäätöksiä ja käsittelee työn rajoitteita. Lopuksi Luku 7 tiivistää työn keskeiset tulokset.
+
+\section{Iipponen-Laitinen -malli}
+
+Jo satelliittiajan alussa, 1960- ja 1970-luvuilla oli tarve kyetä määrittämään ja ennustamaan satelliittien ratoja merkittävällä tarkkuudella. Matalla maan kiertoradalla (kappaleen kiertoaika alle 225 min (lähde)) kiertävät kappaleet, joiden perigeum (kiertoradan maata lähin piste) on alle 500 - 700 km:n korkeudella kokevat termosfäärin kokonaismassatiheydestä aiheutuvan merkittävän ilmanvastusvoiman (lähde). Tämän voiman mallintamiseksi alettiin 1960-luvulla kehittämään empiirisiä malleja, jotka havaintojen pohjalta kuvasivat termosfäärin keskimääräistä kolmiulotteista lämpötila- ja massatiheysjakaumaa (msis ja jacchia lähteet). Näiden mallien kehittäminen oli laskennallisesti yksinkertaisempaa ja nopeampaa kuin sähkö- ja virtausdynamiikan yhtälöt ratkaisevien kehitys, joten niistä nopeasti tuli kiertoratamallinnuksen standardityökaluja.
+
+Toinen fysikaalisten mallien käytettävyyttä rajoittava tekijä on tarve löytää malleille kolmiulotteinen alkutila, jota ilman mallit eivät voi antaa luotettavia ennusteita (heikosti pakotettuina aikoina). Tällaisen alkutilan löytämistä rajoittaa merkittävästi se, että neutraalista yläilmakehästä on saatavilla hyvin vähän reaaliaikaista (korkearesoluutioista) dataa. Empiirisissä malleissa tämä ongelma kierretään etsimällä analyyttinen, epälineaarinen funktiosovitus, joka parhaiten kuvaa kymmenien vuosien historiallista havaintoaineistoa. 
+
+Ilmatieteen laitoksella on aiemman tutkimuksen (lähde) pohjalta kehitetty uudistettua empiiristä yläilmakehämallia, jonka tarkoituksena on keskittyä geomagneettisten myrskyjen ilmakehävaikutusten parempaan arviointiin. Kuten aiemmat yläilmakehämallit, MSIS (lähde) ja DTM (lähde), IL-malli kuvaa hydrostaattisessa tasapainossa olevaa ilmakehää:
+\begin{equation} \label{hydrostatic_eq}
+dp = -\rho g_0 dZ,
+\end{equation}
+missä \textit{p} on ilmanpaine, $\rho$ on tiheys, \textit{Z} on geopotentiaalikorkeus ja \textit{g}\textsubscript{0} on putoamiskiihtyvyys mallin alarajalla 130 km korkeudella (lähde Emmert). Alailmakehästä poiketen turbulenttinen sekoittuminen on pienen tiheyden takia termosfäärissä hyvin pientä suhteessa diffuusioon. Tällöin raskaat kaasulajit (N\textsubscript{2} ja O\textsubscript{2}) kerääntyvät alatermosfääriin (alle 200 km korkeudelle) ja kevyemmät (He ja O) termosfäärin ylempiin osiin (KUVA EMMERTISTÄ). Näin ollen keskimääräisen molekyylimassan muutokset on yhtälöä \ref{hydrostatic_eq} integroitaessa otettava huomioon. Kun yhtälöön sijoitetaan ideaalikaasun tilanyhtälö
+\begin{equation} \label{ideal_eq}
+p = \rho \frac{R}{m} T,
+\end{equation}
+(missä m on keskimääräinen molaarimassa, T on absoluuttinen lämpötila ja R = 8.314 J / K / mol on kaasuvakio), saadaan hydrostaattinen yhtälö muotoon:
+\begin{align} \label{hydrostatic_log_eq}
+\frac{-R}{\rho}~d \left ( \rho \frac{T}{m} \right ) = -R~\frac{T}{m} d(\ln \rho) - R~d \left ( \frac{T}{m} \right ) = g_0 dZ \nonumber \\
+\Rightarrow  d(\ln \rho) = - d \left ( \ln \frac{T}{m} \right ) - \frac{g_0 m}{R T} dZ
+\end{align}
+
+Yhtälön \ref{ideal_log_eq} integroiminen vaatii oletuksen yläilmakehän lämpötilaprofiilista. IL-mallissa hyödynnetään (lähde Bates-Walker):n esittämää empiiristä funktiota:
+\begin{equation} \label{bates_eq}
+T(Z) = T_{ex} - (T_{ex} - T_0) e^{- \frac{T'}{T_{ex} - T_0} (Z-Z_0)},
+\end{equation}
+missä $T_ex$ kuvaa eksosfäärin (maan ilmakehän ylimmän osan) lämpötilaa; $T_0$ on lämpötila ja $T' = dT/dZ$ on lämpötilan pystysuuntainen gradientti mallin alarajalla 130 km korkeudella. Lisäksi hydrostaattisen yhtälön integroinnissa oletetaan, että yläilmakehä on diffusiivisessa tasapainossa; termosfäärin voidaan ajatella koostuvan useasta yksikaasuisesta osailmakehästä, joiden massatiheyksien summa antaa ilmakehän kokonaismassatiheyden missä tahansa termosfäärin pisteessä. Tällöin yhtälö \ref{hydrostatic_log_eq} voidaan integroida jokaiselle kaasulajille erikseen, jolloin lajille $i$ saadaan massatiheyttä kuvaava yhtälö:
+\begin{equation} \label{species_dens_eq}
+\rho_i (Z) = \rho_i (Z_0)~(T_0 / T(Z))^{1+\gamma_i+\alpha}~e^{-\sigma \gamma_i (Z-Z_0)},
+\end{equation}
+missä:
+
+$Z$: geopotentiaalikorkeus $Z = (R_E + z_0)(z-z_0)/(R_E + z)$,
+
+$z$: geometrinen (todellinen) korkeus,
+
+$z_0$: alareunan korkeus $z_0 = 130$ km,
+
+$R_E$: maan napasäde $R_E = 6356.77$ km,
+
+$\gamma_i = m_i g_0/(\sigma~R~T_{ex})$,
+
+$\sigma = T' / (T_{ex} - T_0)$
+
+$\alpha$: lämpötiladiffuusiokorjauskerroin (Heliumille -0.38, muille mallin kaasuille 0). Heliumin tiheys pienenee korkeuden funktiona hieman hitaammin kuin hydrostaattinen tasapaino edellyttää.
+
+Yhtälön \ref{species_dens_eq} mukaan mallin alarajalla on siis lämpötilojen lisäksi määritettävä kunkin kaasulajin massatiheys. Puoli-emiipiirisissä termosfäärimalleissa tämä tehdään geofysikaalisen funktion $G_i(L)$ avulla, joka esittää muutoksen alarajan massatiheydessä geofysikaalisen tilan $L$ funktiona:
+\begin{equation} \label{lb_eq}
+\rho_i(Z_0) = \overline{\rho_i(Z_0)}~\exp(G_i(L)).
+\end{equation}
+
+Geofysikaalinen tila $L$ kuvaa IL-mallissa havaintopisteen sijaintia (leveys- ja pituuspiiri, aurinkoaika), havaintoaikaa (vuodenpäivä), sekä auringon- ja geomagneettista aktiivisuutta. Auringon aktiivisuus on parametrisoitu auringon 30 cm radiovuon (F30) edellisen päivän ja 81:n päivän keskiarvojen avulla, sillä yksittäisistä auringon aktiivisuusindekseistä tämä parhaiten kuvaa auringon UV-säteilyä niillä aallonpituusalueilla, jotka termosfääriä lämmittävät (lähde). Geomageettisesti aktiivisina aikoina puolestaan yläilmakehän varattujen ja neutraalien hiukkasten törmäykset lämmittävät termosfääriä, mikä muuttaa tiheysrakennetta. IL-mallissa vaikutuksen parametrisoinnissa käytetään pohjoisen revontuliovaalin alueen magnetometrimittauksista johdettavaa AE-indeksiä, jonka oletetaan olevan verrannollinen termosfääriä lämmittävän sähkövirran ja hiukkaspresipitaation suuruuteen (lähde).
+
+Lopulta skalaariarvoinen funktio $G$ kuvaa parametrivektorin $L$ suhteellisiksi tiheysmuutoksiksi logaritmisessa avaruudessa. $G$ on määritelty pallon pinnalla, joten sen lausekkeessa on käytetty apuna palloharmonisia funktiota astelukuun ($\sim$meridionaalinen aaltoluku) 6 ja kertalukuun (zonaalinen aaltoluku) 4 saakka. $G_i$ on ominainen kullekin kaasulajille, mutta funktionaalinen muoto on täysin sama; $G$ pitää sisällään 142 vapaata parametriä, jotka saavat eri arvoja riippuen siitä, mikä kaasu on kyseessä. Vastaavalla tavalla määritetään myös lämpötilojen muutos geofysikaalisen tilan L funktiona:
+\begin{equation} \label{lb_eq}
+T_j = \overline{T_j} (1 + G_j(L)).
+\end{equation}
+
+Näiden noin kuudensadan parametrin sovittamiseksi tarvitaan historiallisia havaintoja termosfäärin tiheyksistä ja lämpötiloista. IL-mallin tärkein tietolähde ovat 2000-luvulla tehdyt kokonaismassatiheysmittaukset, jotka on laskettu gravitaatiosatelliittien GRACE (lähde), CHAMP (lähde) ja GOCE (lähde) tarkkojen kiihtyvyysmittarien avulla. Kaasulajien lukumäärätiheydet perustuvat myös 1970- ja 1980- lukujen satelliittipohjaisiin massaspektrometrimittauksiin (esim. lähde), mutta suoria satelliittimittauksia on käytetty myös Eksosfäärin lämpötilan laskennassa. Alareunan lämpötila on laskettu kolmen epäkoherentin sirontatutkan (Arecibo, Millstone Hill, EISCAT) lämpötilamittauksista. Lisäksi IL-malli on ensimmäinen puoli-empiirinen yläilmakehämalli, joka hyödyntää NASA:n Thermosphere Ionosphere Mesosphere Energetics and Dynamics (TIMED) -satelliitin havaintoja alareunan lämpötilagradientista (lähde) ja UV-kanavalla tehtyjä luotauksia hapen ja typen korkeusprofiileista (lähde). 
+
+Paramterien optimaaliset arvot määritetään epälineaariseen optimointiin suunnatulla Levenberg-Marquardt -algoritmilla (lähde), joka etsii parametreille pienimmän neliösumman mielessä parhaat arvot. Algoritmin tuottaman virhekovarianssimatriisin avulla hylätään sellaiset parametrit, joiden absoluuttinen virhe on yli kolmasosa parametrin suuruudesta. Tämän jälkeen sovitus lasketaan uudelleen ainoastaan tilastollisesti merkitseville parametreille. 
+
+\begin{figure}[t]
+\includegraphics[scale = 0.65]{gradu_tiheys}
+\caption{IL-mallin ennuste yläilmakehän kokonaismassatiheydestä (yksikössä $kg/m^3$) leveyspiirin ja aurinkoajan funktiona kesäkuussa 400 km:n korkeudella.}
+\label{fig:tiheys}
+\end{figure}
+
+Kuva \ref{fig:tiheys} esittää IL-mallin kuvausta termosfäärin massatiheydestä kesäkuussa 400 km:n korkeudella. Suurimmat massatiheydet löytyvät pohjoiselta pallonpuoliskolta (koska säteilylämmitys ja keskimääräinen molekyylimassa ovat siellä suuria) ja hieman keskipäivän jälkeen auringon lämmitettyä ilmakehää aamupäivällä. Pienin massatiheys saavutetaan aamuöllä noin kello neljä. Yksinkertaisuudestaan huolimatta IL-mallin tiheysennusteet vastaavat GOCE, CHAMP ja GRACE -satelliittien kiertoratakeskiarvoistettuja massatiheyshavaintoja noin 24\%:n neliöllisen keskiarvon virheellä. 
+
+\section{Tiheyden määrittäminen satelliittien kiertoradoista}
 
 
-
-
-
-\subsection{Sivumennen}
-
-Huomaa, että lähde ei tule lähdeluetteloon, ellei siihen jotenkin
-viitata.
 
 %%% Oma teksti ennen tätä.
 
