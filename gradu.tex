@@ -7,6 +7,7 @@
 \usepackage{fixltx2e}
 \usepackage{amsmath}
 \usepackage{graphicx}
+\usepackage{pgfplotstable}
 %\usepackage{lineno}
 %\linenumbers
 
@@ -167,8 +168,134 @@ Paramterien optimaaliset arvot määritetään epälineaariseen optimointiin suunnatu
 
 Kuva \ref{fig:tiheys} esittää IL-mallin kuvausta termosfäärin massatiheydestä kesäkuussa 400 km:n korkeudella. Suurimmat massatiheydet löytyvät pohjoiselta pallonpuoliskolta (koska säteilylämmitys ja keskimääräinen molekyylimassa ovat siellä suuria) ja hieman keskipäivän jälkeen auringon lämmitettyä ilmakehää aamupäivällä. Pienin massatiheys saavutetaan aamuöllä noin kello neljä. Yksinkertaisuudestaan huolimatta IL-mallin tiheysennusteet vastaavat GOCE, CHAMP ja GRACE -satelliittien kiertoratakeskiarvoistettuja massatiheyshavaintoja noin 24\%:n neliöllisen keskiarvon virheellä. 
 
-\section{Tiheyden määrittäminen satelliittien kiertoradoista}
+\section{Kaksirivinen elementtidata -- termosfäärin massatiheyshavainnot}
+\subsection{Tiheyden määrittäminen}
 
+Pohjois-Amerikan ilmapuolustuskeskuksen (NORAD) tehtävänä on kerätä tietoa maata kiertävistä keinotekoisista satelliiteista. Merkittävä osa NORAD:n havaintoaineistosta on julkisesti saatavilla ja nykyään (toukokuu 2017) aineisto kattaa tiedot yli 40000:n satelliitin kiertoratojen muutoksista (lähde). Poikkeamia maata kiertävien satelliittien ratoihin aiheuttavat; (1) maan painovoimakenttä ja sen epähomogeenisuus, (2) ilmakehän ilmanvastusvoima, (3) kolmannen kappaleen, kuten Kuun tai Auringon painovoima, sekä (4) säteilypaine suorasta ja heijastuneesta auringonsäteilystä (lähde). Kappaleen kiertoradan aikakehitys kuvaa kaikkien näiden poikkeuttavien voimien satelliittiin kohdistamaa yhteisvaikutusta, mutta tietyissä erikoistilanteissa on mahdollista erotella näiden voimien vaikutukset toisistaan. 
+
+Tässä työssä keskitytään tarkastelemaan kappaleita, joiden kiertoradan maata lähin piste (perigeum) on alle 550 km:n korkeudella ja joiden kiertoaika on alle 225 minuuttia. Tarkasteluvuosina 2002 - 2004 auringon korkea aktiivisuus (voimakas UV-säteily) oli kasvattanut ilmakehän skaalauskorkeutta siten, että tällaisilla kiertoradoilla olevien kappaleiden ilmanvastusvoima on todennäköisesti suurempi kuin säteilypaineen vaikutus (lähde). Lisäksi Kuun ja Auringon painovoimakentistä aiheutuvat poikkemat tällaisen kappaleen rataan ovat pieniä (joku viittaus SGP-prop.) ja voidaan jättää huomiotta. 
+
+Näin ollen riittää tarkastella ainoastaan maapallon epähomogeenisen painovoimakentän ja ilmanvastuksen aiheuttamia poikkemia. Termosfäärin massatiheydestä, satelliitin muodosta ja nopeudesta riippuva ilmanvastusvoima voidaan lausua (lähde):
+\begin{equation} \label{airdrag_eq}
+\mathbf{\dot{v}_D} = - \frac{1}{2} \rho B \left | \mathbf{v} - \mathbf{V} \right |^2 \mathbf{e_{v-V}},
+\end{equation}
+jossa $\mathbf{\dot{v}_D}$ on ilmanvastuksen aiheuttama kiihtyvyys, \textbf{v} on kappaleen ja \textbf{V} tuulen nopeus maakeskisessä inertiaalikoordinaatistossa (lähde Bate 1971), $\mathbf{e_{v-V}}$ on ilmakehän suhteen olevan nopeuden suuntainen yksikkövektori, $\rho$ on ilmakehän massatiheys ja ballistinen kerroin:
+\begin{equation} \label{ballistic_eq}
+B = \frac{C_D A}{m},
+\end{equation}
+missä $C_D$ on kappaleen ilmanvastuskerroin, $A$ on nopeutta vastaan kohtisuora pinta-ala ja $m$ on massa. Mikäli satelliitti ei menetä polttoainetta tai rakenneosasiaan (esimerkiksi kiertoratakorjauksen tai törmäyksen seurauksena), edellä esitellyistä ilmanvastukseen vaikuttavista tekijöistä ainoastaan massa säilyy vakiona yhden (tai useamman) kiertoratakierroksen ajan. Nopeus ja ilmakehän tiheys vaihtelevat eniten, mutta kerroin $C_D$ riippuu heikosti ilmakehän kaasukoostumuksesta (lähde) ja nopeutta vastaan kohtisuora ala A taas tuulennopeudesta ja satelliitin mahdollisesta pyörimisestä. 
+
+\begin{figure}[t]
+\ttfamily
+\scriptsize
+\noindent\rule[0.5ex]{\linewidth}{1pt}
+1 25544U 98067A   17124.83855883 +.00002555 +00000-0 +46104-4 0  9999
+
+2 25544 051.6415 254.3711 0005715 124.5522 336.3551 \underline{15.53964796055018}
+\noindent\rule[0.5ex]{\linewidth}{1pt}
+1 25544U 98067A   17125.21849080 +.00002605 +00000-0 +46858-4 0  9996
+
+2 25544 051.6415 252.4770 0005705 125.9198 301.8433 \underline{15.53967431055076}
+\noindent\rule[0.5ex]{\linewidth}{1pt}
+
+1 25544U 98067A   17125.47998944 +.00002778 +00000-0 +49476-4 0  9998
+
+2 25544 051.6417 251.1751 0005804 127.0105 324.6272 \underline{15.53970335055110}
+\noindent\rule[0.5ex]{\linewidth}{1pt}
+\rmfamily
+\caption{Kolme esimerkkiä kansainvälisen avaruusaseman (ISS) kaksirivisestä elementtidatasta vuonna  2017. Vanhin havainto ylimpänä. Keskiliike (kierrosta päivässä) on alleviivattu.}
+\label{fig:tle}
+\end{figure}
+
+Kuva \ref{fig:tle} esittää kolme esimerkkiä NORAD:n tutkadatasta vouden 2017 toukokuulta, joiden avulla kiertoradan aikakehitys voidaan määrittää. Kaksirivisen jakeluformaattinsa vuoksi havaintoaineistoa kutsutaan kaksiriviseksi elementtidataksi. Ensimmäinen rivi antaa kappaleen tunnisteen (NORAD ID, esimerkiksi 25544 kansainväliselle avaruusasemalle), havaintoajan (esimerkiksi 17124 vuoden 2017 päivälle 124), sekä tietoja kiertoradan muutoksista (lähde). Toinen rivi antaa kuusi rataparametriä, jotka määräävät tarkalleen kappaleen keskimääräisen kiertoradan tietyn ajanjakson yli; järjestyksessä vasemmalta oikealle: (1) inklinaatio (esimerkiksi 051.6415) ja (2) nousevan noodin rektaskensio (254.3711) asteina, (3) Eksentrisyyden desimaaliosa (0005715), (4) perigeumin argumentti (124.5522) ja (5) keskianomalia (336.3551) asteina, sekä (6) keskiliike kierroksina päivässä (15.53964). Kaikki toisen rivin rataparametrit ovat keskiarvoja useiden havaintojen ja päivien yli. Keskiarvostuksen tarkka aikaikkuna ei ole julkista tietoa, mutta (lähde Picone 2005) esittää sen olevan nykyään noin kolme päivää matalan maan kiertoradan kappaleille. 
+
+NORAD:n käyttämässä sovitus- ja keskiarvoistusmenetelmässä kappaleen paikasta (ja joskus myös nopeudesta) tehtäviin tutkahavaintoihin sovitetaan tietty analyyttinen kiertoratamalli vaihtelemalla kaksirivisten elementtien arvoja siten, että mallin tulos vastaa mahdollisimman hyvin kappaleen havaittua kiertorataa (lähde). Tämä analyyttinen malli, Simplified General Perturbation-4 (SGP4) (lähde) sisältää yksinkertaisen kuvauksen mapallon painovoimakentästä ja sen epähomogeenisuudesta, minkä ansiosta keskiarvoistus poistaa epähomogeenisuuden aiheuttamat lyhytjaksoiset vaihtelut satelliitin kiertoradassa (lähde). 
+
+Termosfäärin aiheuttaman ilmanvastusvoiman johdosta satelliitti menettää kiertoratakorkeuttaan, sen radan eksentrisyys pienentyy ja  kiertonopeus kasvaa (lähde King-Hele). Ilmanvastuksen määrittämiseksi on siis käytännöllistä hyödyntää kaksirivisen elementtidatan ilmoittamaa kiertoradan kulmataajuutta, josta maan painovoiman vaikutus on poistettu. Tällöin siinä tapahtuvat muutokset aiheutuvat pääasiassa ilmakehän vaikutuksesta. Kuva \ref{fig:tle} antaa tästä esimerkin; kansainvälisen avaruusaseman kiertonopeus (alleviivattu) näyttää selvästi kasvavan ajan funktiona. Tässä tutkielmassa hyödynnetään (lähde Picone) menetelmää, joka kytkee kvantitatiivisesti yhteen muutokset kiertonopeudessa ja ilmakehän tiheydessä. (lähde Picone) mukaan yhtälö \ref{airdrag_eq} voidaan esittää hetkellisen keskiliikkeen $n_M$ avulla muodossa:
+\begin{equation} \label{meanmotion_eq}
+\frac{d}{dt} n_M \cong \frac{3}{2} n_M^{1/3} \mu^{-2/3} \rho B v^3 F,
+\end{equation}
+missä $\mu$ on maapallon gravitaatioparametri (gravitaatiovakion ja maan massan tulo) 3.986 $\cdot 10^{14}~ \mathrm{m^3 s^{-2}}$ ja $\rho$, $B$, sekä $v$ ovat hetkellisiä arvoja tietyssä kiertoradan pisteessä. Tuulenvoimakkuusparametri F on dimensioton parametri, joka kuvaa tuulennopeuden vaikutusta kappaleen kokemaan ilmanvastusvoimaan:
+\begin{equation} \label{F_eq}
+F = \frac{\left | \mathbf{v} - \mathbf{V} \right |^2}{v^2} \mathbf{e_{v-V}} \cdot \mathbf{e_{v}}.
+\end{equation}
+Mikäli oletetaan maapallon mukana pyörivä virtaukseton ilmakehä, hyvä approksimaatio on (lähde King-Hele):
+\begin{equation} \label{F_approx_eq}
+F \cong \left ( 1 - \frac{r~\Omega_E}{v} \cos(i) \right )^2,
+\end{equation}
+missä $\Omega_E$ on maapallon kulmanopeus $7.292 \cdot 10^{-5} ~\mathrm{s^{-1}}$, $i$ on satelliitin inklinaatio ja $r$ on etäisyys maapallon keskustasta. Approksimaation virhe on termosfäärin empiirisillä tuulimalleilla laskettuun yhtälöön (\ref{F_eq}) nähden alle 3\%:a ja virhe on vielä pienempi kun yhtälöä (\ref{meanmotion_eq}) integroidaan useiden päivien yli. 
+
+Yhtälön (\ref{meanmotion_eq}) integrointi on mahdollista kahden eri kaksirivisen elementin välillä (lähde Picone):
+\begin{equation} \label{int_meanmotion_eq}
+\Delta_{ik}n_M \cong \frac{3}{2} \mu^{-2/3} \oint_{(t_i,t_k)} n_M^{1/3}\rho B v^3 F dt,
+\end{equation}
+missä $\Delta_{ik} n_M$ kuvaa keskiliikkeen diskreettiä muutosta kahden elementin välillä ja viivaintegraali tarkoittaa integrointia useiden ratakierrosten yli ajanhetkien $t_i$ ja $t_k$ välillä. Keskiliikkeen muutos selviää suoraan kaksirivisten elementtien keskiarvoistetussa keskiliikkeessä havaitusta muutoksesta. Sen sijaan integrointiin tarvitaan välttämättä samaa SGP4-mallia, jota kaksirivisen elementtidatan keskiarvoistuksessa on käytetty, koska vain sen avulla keskiarvoistettu kiertorata on mahdollista muuttaa tutkien havaitsemaksi, koko ajan ajassa muuttuvaksi kiertoradaksi (lähde). Jos integroinnissa käytettäisiin jotain muuta mallia, eivät kaksisiriviset elementtidatat enää antaisi lähellä tutkahavaintoja olevaa kuvausta kappaleen kiertoradasta. Valitettavasti SGP4-mallin nykyinen lähdekoodi ei kuitenkaan ole julkinen. Viimeisin julkaisu on 1980-luvulta (lähde Hoots, 1980), mutta vähäisiä myöhemmin julkaistuja korjauksia ja takaisinmallinnusta käyttäen siviilitutkijat (lähde Vallado AIAA 2006-6753-Rev2) ovat laatineet mallista version, joka heidän mukaansa vastaa tarkasti nykyistä kaksirivisten elementtien määrityksessä käytettyä mallia. Tästä eteenpäin SGP4-mallilla tarkoitetaan aina (lähde Vallado 2006) versiota.
+
+Koska SGP4 antaa ainoastaan satelliitin inertiaalikoordinaatiston nopeuden ja paikan, ei yhtälön (\ref{int_meanmotion_eq}) integrointia voi sellaisenaan suorittaa. Kuitenkin yhtälöstä (\ref{int_meanmotion_eq}) nähdään, että on olemassa jokin koko integroinnin yli vakiona pysyvä tiheys, joka toteuttaa yhtälön tarkasti:
+\begin{equation} \label{density_raw_eq}
+\rho^H(t_{ik}) \equiv \frac{\frac{2}{3} \Delta_{ik}n_M \mu^{2/3}}{\oint_{(t_i,t_k)} n_M^{1/3} B v^3 F dt} = \frac{\oint_{(t_i,t_k)} n_M^{1/3}\rho B v^3 F dt}{\oint_{(t_i,t_k)} n_M^{1/3} B v^3 F dt},
+\end{equation}
+missä yläindeksi H tarkoittaa havaittua ja $t_{ik} \equiv (t_i + t_k) / 2$ on arvio hetkestä, jota havaittu tiheys kuvaa. Integrointiin vaikuttaa jonkin verran SGP4-mallin sisältämä analyyttinen ilmakehä. Tämän vaikutus on kuitenkin (lähde Picone) mukaan muutaman päivän integroinnin aikana hyvin pieni, koska havaittu tiheys riippuu voimakkaasti kappaleen perigeumin korkeudesta, jonka muutokset ovat ilmakehän skaalauskorkeuteen nähden merkityksettömiä. Käytännössä voidaan siis sanoa, että yhtälön (\ref{density_raw_eq}) arvio on täysin riippumaton mistään yläilmakehämallista, mikä mahdollistaa kaksirivisten elementtien käytön termosfäärimallien tiheyskorjauksissa tarvittavana havaintoaineistona.
+
+Olettamalla ilmanvastuskerroin vakioksi ja arvioimalla keskiliikkeen suuruutta kahden kaksirivisen elementin keskiliikkeiden keskiarvolla $n_M(t_{ik})$ päädytään yhtälöön, jonka integraalitermi voidaan SGP4:n avulla laskea:
+\begin{equation} \label{density_12_eq}
+\rho^H(t_{ik}) \cong  \frac{\frac{2}{3} \Delta_{ik}n_M \mu^{2/3} \left [ n_M(t_{ik}) \right ]^{-1/3}}{B^T \oint_{(t_i,t_k)}  v^3 F dt}  \cong \frac{\oint_{(t_i,t_k)} \rho^T v^3 F dt}{\oint_{(t_i,t_k)}  v^3 F dt} \equiv \rho^T(t_{ik}),
+\end{equation}
+missä yläindeksi T viittaa "todelliseen" (todellisen ballistisen kertoimen määritys käsitellään seuraavassa osiossa). Vastaavasti löydetään ekvivalentti mallitiheys, johon kaksirivisen elementtidatan avulla laskettua tiheyttä voidaan vertailla:
+\begin{equation} \label{density_13_eq}
+\rho^M(t_{ik}) \equiv \frac{\oint_{(t_i,t_k)} \rho^M v^3 F dt}{\oint_{(t_i,t_k)}  v^3 F dt},
+\end{equation}
+missä yläindeksi M viittaa yläilmakehän tiheysmalliin (IL).
+
+Käytännössä yläilmakehän tiheyden määritys kaksirivisen elementtidatan avulla pitää sisällään seuraavat vaiheet:
+\begin{enumerate}
+\item Valitaan kappale, jonka kiertoradalla ilmanvastusvoima on suuri muihin kiertorataa muuttaviin voimiin verrattuna.
+\item Ladataan internetistä (lähde Spacetrack) kappaleen kaksiriviset elementit riittävän pitkältä ajanjaksolta.
+\item Arvioidaan kappaleen todellinen ballistinen kerroin $B^T$, mikäli sitä ei ole aiemmin tehty.
+\item Valitaan kaksi kaksirivistä elementtiä, joiden epookkien $t_i$ ja $t_k$ välillä massatiheys määritetään. 
+\item Lasketaan satelliitin paikka ja nopeus SGP4-mallin avulla hyvin tiheästi (tässä työssä kerran puolessa minuutissa) kahden epookin välillä.
+\item Lasketaan tuuliparametri F yhtälöstä (\ref{F_eq}) tai (\ref{F_approx_eq}) ja integroidaan yhtälön (\ref{density_12_eq}) viivaintegraali numeerisesti (tässä työssä puolisuunnikassäännöllä (lähde)).
+\item Määritetään keskiliikkeen muutokset kahden kaksirivisen elementin avulla ja arvioidaan ilmakehän keskimääräinen tiheys yhtälöstä (\ref{density_12_eq}).
+\end{enumerate}
+
+\subsection{Kappaleiden valinta ja ballistisen kertoimen määritys}
+
+\begin{figure}[t]
+\centering
+\includegraphics[scale = 0.25]{Explorer_8}
+\caption{Explorer 8 -satelliitti (NORAD ID 60), jota käytetään yläilmakehän tiheyden määrityksessä. Muodoltaan satelliitti muistuttaa kaksoiskartiota; kappaleen nopeusvektori avaruudessa osoittaisi kuvan tapauksessa lähes suoraan ylöspäin. (lähde Wikimedia)}
+\label{fig:explorer8}
+\end{figure}
+
+Kuten aiemmassa osiossa todetiin, termosfäärin massatiheys voi aiheuttaa aiheuttaa havaittavia poikkeamia matalalla kiertävien kappaleiden kiertoratoihin. Koska työn tavoitteena on tuottaa kolmiulotteinen korjaus IL-mallin termosfäärin tiheysennusteeseen, tässä tutkielmassa käytetään useita kymmeniä eri korkeuksilla, aurinkoajoilla ja leveyspiireillä kiertäviä satelliitteja. Käytännössä on kuitenkin hyvin vaikeaa valita useiden tuhansien satelliittien joukosta ne, joita termosfääritutkimuksissa voidaan käyttää; satelliitti ei saisi olla toimintakuntoinen, sen olisi oltava säännöllisen muotoinen (katso esimerkiksi Kuva \ref{fig:explorer8}) eikä se saisi pyöriä, jotta sen ballistista kerrointa voidaan arvioida vakiona. Tämän työn data-assimilaatiojärjestelmässä käytetyt 45 satelliittia ja kolme riippumatonta arviointisatelliittia on valittu aiempien tutkimusten (lähde saunders, emmert) perusteella. Erityisen tärkeä tietolähde on ollut luettelo Yhdysvaltain ilmavoimien Avaruustaistelulaboratorion (\textit{US Air Force Space Battlelab}) High Accuracy Satellite Drag Model (HASDM)-mallissa käytetyistä 80:sta kappaleesta (lähde Doornbos). 
+
+Vaikka aiemmissa tutkimuksissa tiheysanalyysiin sopivia kappaleita on löydetty kymmenittäin, on niiden todellisen ballistisen kertoimen määrittäminen hankalaa (lähde). Tämä aiheutuu pääasiassa siitä, että ballistinen kerroin riippu ilmanvastuksesta ja ilmakehän tiheydestä itsestään yhtälön (\ref{density_12_eq}) mukaan:
+\begin{equation} \label{Bi_eq}
+B_i \cong  \frac{\frac{2}{3} \Delta_{ik}n_M \mu^{2/3} \left [ n_M(t_{ik}) \right ]^{-1/3}}{\oint_{(t_i,t_k)} \rho^T v^3 F dt},
+\end{equation}
+missä $B_i$ on keskimääräinen ballistinen kerroin epookkien välillä. Käytännössä siis jokaisten kaksirivisten elementtien epookkien välillä ballistinen kerroin on eri. Määritystä vaikeuttaa vielä se, ettei yhtälössä (\ref{Bi_eq}) tarvittavaa ilmakehän todellista tiheyttä $\rho^T$ tunneta. Tästä syystä usein käytetään todellisen tiheyden tilalla empiirisen termosfäärimallin tiheyttä $\rho^M$(lähde esim. Doornbos) ja todellisen ballistisen kertoimen arvossa käytetään $B_i$-arvojen keskiarvoa useiden vuosien yli. 
+
+\begin{figure}[t]
+\includegraphics[scale = 0.5]{gradu_Bi}
+\caption{Ballistisen kertoimen ja tiheyskorkeuden aikasarja Explorer 8 -satelliitille. Kuvassa punaisten viivojen sisäpuolelle jäävää vuotta 2003 ei ole huomioitu ballistisen kertoimen laskennassa.}
+\label{fig:Btrue}
+\end{figure}
+
+Tätä menetelmää käytetään myös tässä tutkielmassa. Kuva \ref{fig:Btrue} esittää Explorer 8 -satelliitin $B_i$-kertoimien aikasarjaa ja sitä korkeutta, jota satelliitin radasta määritetyn massatiheyden voidaan parhaiten katsoa kuvaavan (tekijällä $\rho^M v^3 F$ painotettu keskiarvo geometrisestä kiertoratakorkeudesta). Data-assimilaatiojärjestelmän toimivuutta testataan vuoden 2003 datalla, joten todellinen ballistinen kerroin määritellään vuosien 2002 ja 2004 kertoimien $B_i$ keskiarvona. Jotta epookkien välinen ballistisen kertoimen satunnaisvaihtelu olisi mahdollisimman pientä, käytetään yhtälön (\ref{Bi_eq}) integroinnissa vähintään kymmenen päivän integrointipituutta, minkä johdosta havaitut keskiliikkeen muutokset ovat suurempia.
+
+Explorer 8 -satelliitin ballistisen kertoimen aikasarjalla on selvästi vahva puolivuosittainen komponentti, jossa $B_i$:n paikalliset maksimit osuvat mielenkiintoisesti samoihin aikoihin kuin termosfäärin globaalin massatiheyden maksimit \citep{emmert_2015}. Tämä todennäköisesti kertoo mallin ajallisesti vaihtelevasta virheestä kappaleen kiertoradalla, sillä yhtälöiden (\ref{density_12_eq}) ja (\ref{density_13_eq}) perusteella:
+\begin{equation} \label{obsToModel_eq}
+\frac{\rho^H}{\rho^M} \cong \frac{B_i}{B^T}.
+\end{equation}
+Näin ollen IL-malli aliarvioisi yläilmakehän puolivuosittaista massatiheysvaihtelua tässä yksittäistapauksessa. Muiden satelliittien ballistinen kerroin käyttäytyy hyvin usein samanlaisella tavalla, mutta värähtelyn taajuus vaihtelee neljännesvuosittaisesta vuosittaiseen (ei näytetä). 
+
+Tämä peräkkäisten $B_i$ -havaintojen suuri kovarianssi vaikeuttaa $B^T$:n virhearvion tekemistä. Tässä tutkielmassa todellisen ballistisen kertoimen virhearviona käytetään satunnaisjakautuneen keskiarvon keskivirhettä (esim. lähde):
+\begin{equation} \label{Bi_err_eq}
+\sigma_{B^T} = \frac{s_{B_i}}{\sqrt{N_{B_i}}},
+\end{equation}
+jossa $\sigma_{B^T}$ on kertoimen virhe, $s_{B_i}$ on vuosien 2002 ja 2004 $B_i$ -havaintojen keskihajonta ja $N_{B_i}$ havaintojen lukumäärä. Vaikka kyseessä on havaintojen suuresta autokorrelaatiosta johtuen selkeä aliarvio, vaihtelee virhearvio 3\%:n ja 10\%:n välillä. Tämä kvalitatiivisesti vastaa aiempia arvioita kaksirivisillä elementeillä saavutettavasta tarkkuudesta (esim. lähde Doornbos). Lisäksi havainnot ballistisesta kertoimesta eivät ole aivan normaalijakautuneita (ei näytetä), jolloin $\sigma_{B^T}$ ei välttämättä kunnolla kuvasta ballistisen kertoimen vaihtelua. 
+
+\pgfplotstabletypeset[]{Bfactors.csv}
 
 
 %%% Oma teksti ennen tätä.
