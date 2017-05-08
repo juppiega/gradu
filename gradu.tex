@@ -110,7 +110,14 @@ Ilmatieteen laitoksella on aiemman tutkimuksen (lähde) pohjalta kehitetty uudist
 \begin{equation} \label{hydrostatic_eq}
 dp = -\rho g_0 dZ,
 \end{equation}
-missä \textit{p} on ilmanpaine, $\rho$ on tiheys, \textit{Z} on geopotentiaalikorkeus ja \textit{g}\textsubscript{0} on putoamiskiihtyvyys mallin alarajalla 130 km korkeudella (lähde Emmert). Alailmakehästä poiketen turbulenttinen sekoittuminen on pienen tiheyden takia termosfäärissä hyvin pientä suhteessa diffuusioon. Tällöin raskaat kaasulajit (N\textsubscript{2} ja O\textsubscript{2}) kerääntyvät alatermosfääriin (alle 200 km korkeudelle) ja kevyemmät (He ja O) termosfäärin ylempiin osiin (KUVA EMMERTISTÄ). Näin ollen keskimääräisen molekyylimassan muutokset on yhtälöä \ref{hydrostatic_eq} integroitaessa otettava huomioon. Kun yhtälöön sijoitetaan ideaalikaasun tilanyhtälö
+missä \textit{p} on ilmanpaine, $\rho$ on tiheys, \textit{Z} on geopotentiaalikorkeus ja \textit{g}\textsubscript{0} on putoamiskiihtyvyys mallin alarajalla 130 km korkeudella (lähde Emmert). Alailmakehästä poiketen turbulenttinen sekoittuminen on pienen tiheyden takia termosfäärissä hyvin pientä suhteessa diffuusioon. Tällöin raskaat kaasulajit (N\textsubscript{2} ja O\textsubscript{2}) kerääntyvät alatermosfääriin (alle 200 km korkeudelle) ja kevyemmät (He ja O) termosfäärin ylempiin osiin (ks. Kuva \ref{fig:emmert_tiheys}). 
+\begin{figure}[t]
+\centering
+\includegraphics[scale = 0.4]{emmert_tiheys}
+\caption{Termosfäärin tärkeimpien kaasulajien lukumäärätiheyksien globaalit keskiarvot korkeuden funktiona auringon maksimin aikaan. \citet{emmert_2015} Kuva 2(a).}
+\label{fig:emmert_tiheys}
+\end{figure}
+Näin ollen keskimääräisen molekyylimassan muutokset on yhtälöä \ref{hydrostatic_eq} integroitaessa otettava huomioon. Kun yhtälöön sijoitetaan ideaalikaasun tilanyhtälö
 \begin{equation} \label{ideal_eq}
 p = \rho \frac{R}{m} T,
 \end{equation}
@@ -168,7 +175,7 @@ Paramterien optimaaliset arvot määritetään epälineaariseen optimointiin suunnatu
 
 Kuva \ref{fig:tiheys} esittää IL-mallin kuvausta termosfäärin massatiheydestä kesäkuussa 400 km:n korkeudella. Suurimmat massatiheydet löytyvät pohjoiselta pallonpuoliskolta (koska säteilylämmitys ja keskimääräinen molekyylimassa ovat siellä suuria) ja hieman keskipäivän jälkeen auringon lämmitettyä ilmakehää aamupäivällä. Pienin massatiheys saavutetaan aamuöllä noin kello neljä. Yksinkertaisuudestaan huolimatta IL-mallin tiheysennusteet vastaavat GOCE, CHAMP ja GRACE -satelliittien kiertoratakeskiarvoistettuja massatiheyshavaintoja noin 24\%:n neliöllisen keskiarvon virheellä. 
 
-\section{Kaksirivinen elementtidata -- termosfäärin massatiheyshavainnot}
+\section{Kaksiriviset elementit -- termosfäärin massatiheyshavainnot}
 \subsection{Tiheyden määrittäminen}
 
 Pohjois-Amerikan ilmapuolustuskeskuksen (NORAD) tehtävänä on kerätä tietoa maata kiertävistä keinotekoisista satelliiteista. Merkittävä osa NORAD:n havaintoaineistosta on julkisesti saatavilla ja nykyään (toukokuu 2017) aineisto kattaa tiedot yli 40000:n satelliitin kiertoratojen muutoksista (lähde). Poikkeamia maata kiertävien satelliittien ratoihin aiheuttavat; (1) maan painovoimakenttä ja sen epähomogeenisuus, (2) ilmakehän ilmanvastusvoima, (3) kolmannen kappaleen, kuten Kuun tai Auringon painovoima, sekä (4) säteilypaine suorasta ja heijastuneesta auringonsäteilystä (lähde). Kappaleen kiertoradan aikakehitys kuvaa kaikkien näiden poikkeuttavien voimien satelliittiin kohdistamaa yhteisvaikutusta, mutta tietyissä erikoistilanteissa on mahdollista erotella näiden voimien vaikutukset toisistaan. 
@@ -235,7 +242,7 @@ Koska SGP4 antaa ainoastaan satelliitin inertiaalikoordinaatiston nopeuden ja pa
 \begin{equation} \label{density_raw_eq}
 \rho^H(t_{ik}) \equiv \frac{\frac{2}{3} \Delta_{ik}n_M \mu^{2/3}}{\oint_{(t_i,t_k)} n_M^{1/3} B v^3 F dt} = \frac{\oint_{(t_i,t_k)} n_M^{1/3}\rho B v^3 F dt}{\oint_{(t_i,t_k)} n_M^{1/3} B v^3 F dt},
 \end{equation}
-missä yläindeksi H tarkoittaa havaittua ja $t_{ik} \equiv (t_i + t_k) / 2$ on arvio hetkestä, jota havaittu tiheys kuvaa. Integrointiin vaikuttaa jonkin verran SGP4-mallin sisältämä analyyttinen ilmakehä. Tämän vaikutus on kuitenkin (lähde Picone) mukaan muutaman päivän integroinnin aikana hyvin pieni, koska havaittu tiheys riippuu voimakkaasti kappaleen perigeumin korkeudesta, jonka muutokset ovat ilmakehän skaalauskorkeuteen nähden merkityksettömiä. Käytännössä voidaan siis sanoa, että yhtälön (\ref{density_raw_eq}) arvio on täysin riippumaton mistään yläilmakehämallista, mikä mahdollistaa kaksirivisten elementtien käytön termosfäärimallien tiheyskorjauksissa tarvittavana havaintoaineistona.
+missä yläindeksi H tarkoittaa havaittua ja $t_{ik} \equiv (t_i + t_k) / 2$ on ajanhetki, jota tiheyden katsotaan data-assimilaatiossa kuvaavan. Kyseessä on kuitenkin satelliittin kokema "keskimääräinen" tiheys, joka ei kuvaa mitään tiettyä pistettä tai ajanhetkeä, vaan tiheyden vaikutusta useiden ratakierrosten yli. Integrointiin vaikuttaa lisäksi jonkin verran SGP4-mallin sisältämä analyyttinen ilmakehä. Tämän vaikutus on kuitenkin (lähde Picone) mukaan muutaman päivän integroinnin aikana hyvin pieni, koska havaittu tiheys riippuu voimakkaasti kappaleen perigeumin korkeudesta, jonka muutokset ovat ilmakehän skaalauskorkeuteen nähden merkityksettömiä. Käytännössä voidaan siis sanoa, että yhtälön (\ref{density_raw_eq}) arvio on täysin riippumaton mistään yläilmakehämallista, mikä mahdollistaa kaksirivisten elementtien käytön termosfäärimallien tiheyskorjauksissa käyettävänä, mallista riippumattomana havaintoaineistona.
 
 Olettamalla ilmanvastuskerroin vakioksi ja arvioimalla keskiliikkeen suuruutta kahden kaksirivisen elementin keskiliikkeiden keskiarvolla $n_M(t_{ik})$ päädytään yhtälöön, jonka integraalitermi voidaan SGP4:n avulla laskea:
 \begin{equation} \label{density_12_eq}
@@ -295,8 +302,59 @@ Tämä peräkkäisten $B_i$ -havaintojen suuri kovarianssi vaikeuttaa $B^T$:n virhea
 \end{equation}
 jossa $\sigma_{B^T}$ on kertoimen virhe, $s_{B_i}$ on vuosien 2002 ja 2004 $B_i$ -havaintojen keskihajonta ja $N_{B_i}$ havaintojen lukumäärä. Vaikka kyseessä on havaintojen suuresta autokorrelaatiosta johtuen selkeä aliarvio, vaihtelee virhearvio 3\%:n ja 10\%:n välillä. Tämä kvalitatiivisesti vastaa aiempia arvioita kaksirivisillä elementeillä saavutettavasta tarkkuudesta (esim. lähde Doornbos). Lisäksi havainnot ballistisesta kertoimesta eivät ole aivan normaalijakautuneita (ei näytetä), jolloin $\sigma_{B^T}$ ei välttämättä kunnolla kuvasta ballistisen kertoimen vaihtelua. 
 
-\pgfplotstabletypeset[]{Bfactors.csv}
+Aiemmissa tutkimuksissa käytetyistä kappaleista valittiin ne 48 kappaletta, joiden (1) kaksirivisiä elementtejä oli saatavilla vuosina 2002 -- 2004 vähintään kahden päivän välein, (2) keskimääräinen tiheyskorkeus oli alle 550 km, (3) keskiliikkeen trendi selvästi kasvava ja (3) yksittäiset $B_i$ -arvot poikkesivat keskiarvostaan enintään tekijällä 4. Kaksirivisten elementtien perusteella laskettujen $B_i$ -arvojen hajonta kasvoi ja keskiliikken kasvuvauhti hidastui merkittävästi yli 550 km:n tiheyskorkeudella, joten tässä työssä oletetaan, että hyödyllisiä tiheyshavaintoja on saatavilla vain tämän korkeuden alapuolelta. Kappaleista kolme, keirtoradalle jääneet raketin osat 1616 (tiheyskorkeus 437 km), 2017 (538 km), ja 23198 (397 km) toimivat riippumattomina kappaleina, joiden avulla data-assimilaation laatua voidaan arvioida. Kyseiset kolme ki
 
+%\pgfplotstabletypeset[]{Bfactors.csv}
+
+\section{Ensemble Kalman -suodin}
+
+\subsection{Taustaa}
+
+Data-assimilaation tavoitteena on korjata mallin ennustetta havaintojen avulla siten, että mallin tila vastaa mahdollisimman tarkasti tutkittavan järjestelmän todellista tilaa. Data-assimilaatio on tärkeä osa operatiivisia säänennustusjärjestelmiä, sillä sen avulla voidaan mallille asettaa mahdollisimman todenmukainen alkutila, jota mallin yhtälöt kehittävät ajassa eteenpäin. 
+
+Koska sekä havainnot että malli sisältävät virhettä, saadaan paras kuva järjestelmän todennäköisimmästä tilasta yhdistämällä mallin ja havaintojen tiedot keskenään. Olettamalla virheiden olevan normaalijakautuneiden, voidaan mallin tilan $\mathbf{x}$ todennäköisyysjakauma lausua ainoastaan mallin taustan (eli korjaamattoman ennusteen) $\mathbf{x_b}$ avulla (lähde):
+\begin{equation} \label{model_prob_eq}
+P(\mathbf{x}) \propto \exp\left [ -\frac{1}{2}(\mathbf{x}-\mathbf{x_b})^T \mathbf{B}^{-1} (\mathbf{x}-\mathbf{x_b})\right ],
+\end{equation}
+missä $\mathbf{B}$ on mallin taustan kovarianssimatriisi. Koska malli ja havainnot kuvaavat samaa järjestelmää, on mielekästä määritellä havaintojen $\mathbf{y}$ todennäköisyys, kun mallin tila $\mathbf{x}$ on tunnettu:
+\begin{equation} \label{data_prob_eq}
+P(\mathbf{y} | \mathbf{x}) \propto \exp\left [ -\frac{1}{2}(\mathbf{y}-H(\mathbf{x}))^T \mathbf{R}^{-1} (\mathbf{y}-H(\mathbf{x}))\right ],
+\end{equation}
+jossa $\mathbf{R}$ ilmaisee havaintojen kovarianssin ja $H$ on niin sanottu havainto-operaattori, joka on kuvaus malliavaruudesta havaintoavaruuteen. Se siis ilmaisee, mitä arvoja tulisi havaita, mikäli mallitila on annetun ja havainnot virheettömiä.
+
+Näiden kahden todennäköisyyden ja Bayesin lauseen avulla saadaan määritettyä todennäköisyys mallin tilalle, kun havainnot ovat annetujen:
+\begin{align} \label{final_prob_eq}
+P(\mathbf{x} | \mathbf{y}) \propto P(\mathbf{y} | \mathbf{x}) P(\mathbf{x}) \propto 
+\exp\left [ -\frac{1}{2}(\mathbf{x}-\mathbf{x_b})^T \mathbf{B}^{-1} (\mathbf{x}-\mathbf{x_b}) -\frac{1}{2}(\mathbf{y}-H(\mathbf{x}))^T \mathbf{R}^{-1} (\mathbf{y}-H(\mathbf{x}))\right ].
+\end{align}
+Eksponenttifunktion monotonisuuden johdosta suurin todennäköisyys löydetään minimoimalla lauseketta (n.k. sakkofunktio):
+\begin{align} \label{J_eq}
+ J~=~\frac{1}{2}(\mathbf{x}-\mathbf{x_b})^T \mathbf{B}^{-1} (\mathbf{x}-\mathbf{x_b}) + \frac{1}{2}(\mathbf{y}-H(\mathbf{x}))^T \mathbf{R}^{-1} (\mathbf{y}-H(\mathbf{x})).
+\end{align}
+Tämän funktion minimikohta antaa järjestelmän todennäköisimmän tilan eli niin sanotun analyysin $\mathbf{x}=\mathbf{x_a}$.
+
+Data-assimilaatio-järjestelmät jaetaan kahteen pääluokkaan sen mukaan, minimoivatko ne funktiota (\ref{J_eq}) suoraan jollakin iteratiivisella minimointialgoritmilla (variaatiomenetelmät), vai ratkaisevatko ne joukon lineaarisia yhtälöitä järjestelmän todennäköisimmän tilan löytämiseksi (peräkkäiset menetelmät) (lähde). Eräs käytetyimmistä peräkkäisistä data-assimilaatio-menetelmistä on Kalman-suodin (lähde), joka tuottaa lineaariselle järjestelmälle harhattoman analyysin ja eksaktit virhekovarianssit. Kalman-suotimen toiminta perustuu sakkofunktion minimointiin analyyttisen ratkaisun avulla, joka löytyy sakkofunktion derivaatan ($\partial J / \partial \mathbf{x}$) nollakohdasta. Tämän nollakohdan laskennassa oletetetaan, että havainto-operaattori $H$ on linearisoitavissa siten, että:
+\begin{align} \label{tanglin_eq}
+H(\mathbf{x})-H(\mathbf{x_b}) \cong \mathbf{H}(\mathbf{x-x_b}),
+\end{align}
+missä $\mathbf{H}$ on tangentti-lineaarinen havainto-operaattori eli havaintojen Jacobin matriisi mallitilan suhteen $\mathbf{H_{ij}} = \partial y_i / \partial x_j$. Tämän (approksimaation) avulla analyysiksi löydetään:
+\begin{align} \label{xa_eq}
+\mathbf{x_a} = \mathbf{x_b} + \mathbf{K}(\mathbf{y} - H(\mathbf{x_b})),
+\end{align}
+jossa 
+\begin{align} \label{K_eq}
+\mathbf{K} = \mathbf{B H^T}(\mathbf{HBH^T} + \mathbf{R})^{-1}
+\end{align}
+on Kalmanin optimaalinen painomatriisi. $\mathbf{HBH^T}$ ilmaisee mallin taustan havaintoavaruuteen muunnettun kovarianssin ja $\mathbf{BH^T}$ muuttaa havaintojen ja mallin ennusteiden eron mallitilan korjaukseksi. Lisäksi Kalman-suotimessa mallitilan aikakehityksessä tarvittavan ennustusmallin lisäksi on oltava malli, joka kehittää analyysin kovarianssia $\mathbf{A}^n\mathbf{ = (I-KH)B}^{n}$ ajassa eteenpäin (lähde):
+\begin{align} \label{time_evol_eq}
+\mathbf{B}^{n+1} = \mathbf{MA}^n\mathbf{M^T},
+\end{align}
+missä yläindeksi n viittaa aikaan ja $\mathbf{M} = \partial M / \partial \mathbf{x_a}$ on (epälineaarisen) mallin $M$ linearisoitu eli tangentti-lineaarinen malli. 
+
+Kalman-suodin ei kuitenkaan sovellu sellaisenaan käytettäväksi nykyaikaisissa säämalleissa, sillä taustan ja analyysin kovarianssimatriisit muodostuisivat niin suuriksi, ettei niitä nykyisillä tietokoneilla voisi käsitellä (lähde). Lisäksi tangentti-lineaaristen havainto-operaattorien ja mallin kehitystyö vaatii paljon aikaa, ennen kuin data-assimilaatio-järjestelmää voidaan hyödyntää (lähde). Yksinkertaisemmalle järjestelmälle 
+
+
+\subsection{EnKF IL-mallissa}
 
 %%% Oma teksti ennen tätä.
 
