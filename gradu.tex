@@ -113,7 +113,7 @@ dp = -\rho g_0 dZ,
 miss‰ \textit{p} on ilmanpaine, $\rho$ on tiheys, \textit{Z} on geopotentiaalikorkeus ja \textit{g}\textsubscript{0} on putoamiskiihtyvyys mallin alarajalla 130 km korkeudella (l‰hde Emmert). Alailmakeh‰st‰ poiketen turbulenttinen sekoittuminen on pienen tiheyden takia termosf‰‰riss‰ hyvin pient‰ suhteessa diffuusioon. T‰llˆin raskaat kaasulajit (N\textsubscript{2} ja O\textsubscript{2}) ker‰‰ntyv‰t alatermosf‰‰riin (alle 200 km korkeudelle) ja kevyemm‰t (He ja O) termosf‰‰rin ylempiin osiin (ks. Kuva \ref{fig:emmert_tiheys}). 
 \begin{figure}[t]
 \centering
-\includegraphics[scale = 0.4]{emmert_tiheys}
+%\includegraphics[scale = 0.4]{emmert_tiheys}
 \caption{Termosf‰‰rin t‰rkeimpien kaasulajien lukum‰‰r‰tiheyksien globaalit keskiarvot korkeuden funktiona auringon maksimin aikaan. \citet{emmert_2015} Kuva 2(a).}
 \label{fig:emmert_tiheys}
 \end{figure}
@@ -288,7 +288,7 @@ miss‰ $B_i$ on keskim‰‰r‰inen ballistinen kerroin epookkien v‰lill‰. K‰yt‰nnˆss‰
 \label{fig:Btrue}
 \end{figure}
 
-T‰t‰ menetelm‰‰ k‰ytet‰‰n myˆs t‰ss‰ tutkielmassa. Kuva \ref{fig:Btrue} esitt‰‰ Explorer 8 -satelliitin $B_i$-kertoimien aikasarjaa ja sit‰ korkeutta, jota satelliitin radasta m‰‰ritetyn massatiheyden voidaan parhaiten katsoa kuvaavan (tekij‰ll‰ $\rho^M v^3 F$ painotettu keskiarvo geometrisest‰ kiertoratakorkeudesta). Data-assimilaatioj‰rjestelm‰n toimivuutta testataan vuoden 2003 datalla, joten todellinen ballistinen kerroin m‰‰ritell‰‰n vuosien 2002 ja 2004 kertoimien $B_i$ keskiarvona. Jotta epookkien v‰linen ballistisen kertoimen satunnaisvaihtelu olisi mahdollisimman pient‰, k‰ytet‰‰n yht‰lˆn (\ref{Bi_eq}) integroinnissa v‰hint‰‰n kymmenen p‰iv‰n integrointipituutta, mink‰ johdosta havaitut keskiliikkeen muutokset ovat suurempia.
+T‰t‰ menetelm‰‰ k‰ytet‰‰n myˆs t‰ss‰ tutkielmassa. Kuva \ref{fig:Btrue} esitt‰‰ Explorer 8 -satelliitin $B_i$-kertoimien aikasarjaa ja sit‰ korkeutta, jota satelliitin radasta m‰‰ritetyn massatiheyden voidaan parhaiten katsoa kuvaavan (tekij‰ll‰ $\rho^M v^3 F$ painotettu keskiarvo geometrisest‰ kiertoratakorkeudesta). Data-assimilaatioj‰rjestelm‰n toimivuutta testataan vuoden 2003 datalla, joten todellinen ballistinen kerroin m‰‰ritell‰‰n vuosien 2002 ja 2004 kertoimien $B_i$ keskiarvona. Jotta epookkien v‰linen ballistisen kertoimen satunnaisvaihtelu olisi mahdollisimman pient‰, k‰ytet‰‰n yht‰lˆn (\ref{Bi_eq}) integroinnissa v‰hint‰‰n kymmenen p‰iv‰n integrointipituutta, mink‰ johdosta havaitut keskiliikkeen muutokset ovat suurempia ja merkitsev‰mpi‰. K‰yt‰nnˆss‰ ballististen kertoimien keskiarvoistus tekee kappaleiden avulla teht‰v‰n tiheysm‰‰rityksen IL-mallin suhteen harhattomaksi (pitkien ajanjaksojen yli).
 
 Explorer 8 -satelliitin ballistisen kertoimen aikasarjalla on selv‰sti vahva puolivuosittainen komponentti, jossa $B_i$:n paikalliset maksimit osuvat mielenkiintoisesti samoihin aikoihin kuin termosf‰‰rin globaalin massatiheyden maksimit \citep{emmert_2015}. T‰m‰ todenn‰kˆisesti kertoo mallin ajallisesti vaihtelevasta virheest‰ kappaleen kiertoradalla, sill‰ yht‰lˆiden (\ref{density_12_eq}) ja (\ref{density_13_eq}) perusteella:
 \begin{equation} \label{obsToModel_eq}
@@ -427,12 +427,32 @@ P_{nm}(x) = \frac{(-1)^m}{2^n n!} (1-x^2)^{m/2} \frac{d^{n+m}}{d x^{n+m}} (x^2 -
 \end{equation}
 ovat normalisoimattomat Legendren liittofunktiot. T‰ss‰ tyˆss‰ rajoitutaan palloharmoniseen korjaukseen T2, jonka avulla suuriamplitudinen p‰iv‰- ja puolip‰iv‰vaihtelu voidaan hyvin karakterisoida. N‰in ollen mallitila koostuu yhteens‰ 11:a korjausparametrist‰ (kaksi alarajalla ja yhdeks‰n yl‰rajalla).
 
+Jotta mallitilan ja havaintojen kovarianssien suhde voitaisiin m‰‰ritt‰‰, on havaintoaineistolle oltava selke‰ virhearvio. T‰m‰n tyˆn data-assimilaatio-j‰rjestelm‰ss‰ havaintoina k‰ytet‰‰n ainoastaan kaksirivisi‰ elementtej‰. Ongelma kuitenkin on, ettei kaksirivinen elementtiaineisto pid‰ sis‰ll‰‰n mit‰‰n tietoa havaintoep‰varmuudesta, eik‰ k‰ytt‰j‰n ole mitenk‰‰n mahdollista selvitt‰‰ alkuper‰isten tutkahavaintojen tai ratasovituksen tarkkuutta (l‰hde). Siksi t‰ss‰ tyˆss‰ oletetankin kaksirivisten elementtien itsess‰‰n olevan hyvin tarkkoja, suurimman ep‰varmuuden muodostuessa satelliitin todellisen ballistisen kertoimen $B^T$ m‰‰rityksest‰. N‰in ollen virheen kasautumislaista (l‰hde-esimerkki) ja yht‰lˆst‰ (\ref{density_12_eq})
+\begin{equation} \label{densErr_eq}
+\sigma_{\rho^H} \cong  \frac{\frac{2}{3} \Delta_{ik}n_M \mu^{2/3} \left [ n_M(t_{ik}) \right ]^{-1/3}}{\oint_{(t_i,t_k)}  v^3 F dt} \frac{\sigma_{B^T}}{(B^T)^2}.
+\end{equation}
+Kirjoittajan tietojen mukaan t‰m‰ on ensimm‰inen kerta, kun kaksirivisten elementtien assimilaatiossa otetaan huomioon tiheyden ep‰varmuus. 
 
+Koska yht‰lˆiden (\ref{density_12_eq}) antama tiheys vaihtelee useita kertaluokkia l‰pi termosf‰‰rin ja koska tiheys on pieni suhteessa mallitilan parametreihin, assimiloidaan t‰ss‰ tyˆss‰ data malliin logaritmisessa koordinaatistossa. T‰llˆin tiheyden ep‰varmuus (yht‰lˆ (\ref{densErr_eq})) saa virheen kasautumislaista muodon:
+\begin{equation} \label{densErrLog_eq}
+\sigma_{\ln(\rho^H)} = \sigma_{\rho^H} \frac{\partial}{\partial \rho^H} \ln(\rho^H) = \sigma_{\rho^H} / \rho^H.
+\end{equation}
+Logaritmisen koordinaatiston oletetaan parantavan numeerista vakautta ja siten suotimen tarkkuutta. 
 
+Jokaisella assimilaatiosyklill‰ havainnoiksi valitaan ne kappaleet, joiden kaksirivisten elementtien epookkien keskiarvo $t_{ik}$ osuu assimilaatioikkunaan (aikav‰li, jolta havaintoja assimilaatiota varten ker‰t‰‰n). Koska kaksirivisen elementtidatan aikaresoluutio on noin kolme p‰iv‰‰, vaaditaan tiheyden m‰‰rityksess‰ k‰ytettyjen elementtien epookkien eroksi v‰hint‰‰n kolme p‰iv‰‰. Jotta yhteen assimilaatioon olisi k‰ytett‰viss‰ mahdollisimman paljon dataa, ja jotta aikaresoluutio olisi hyv‰, myˆs assimilaatioikkunan pituudeksi valittiin kolme p‰iv‰‰. Aina ennen seuraavaa assimilaatiosykli‰ asetetaan $t_i = t_k$ eli saman kappaleen tiheyden integrointia jatketaan siit‰, mihin edellisen syklin aikana on j‰‰ty. Kappaleista kuitenkin hyl‰t‰‰n ne, joiden keskiliike on pienentynyt. L‰hemmiss‰ tarkasteluissa todettiin, ett‰ muihin muuttujiin, kuten $B_i$:hin liittyv‰‰ eliminointia ei tarvinnut tehd‰, koska kaikki 45 kappaletta oli valittu siten, ett‰ ne antavat realistiselta vaikuttavaa tiheysinformaatiota (kun keskiliike kasvaa). 
 
+Mallirypp‰‰n kooksi valittiin N = 100 mallia, koska merkitt‰v‰‰ parannusta assimilaatioj‰rjestelm‰n suorituskyvyss‰ ei suuremmilla rypp‰ill‰ havaittu (ei n‰ytet‰). Rypp‰‰n kovarianssin kuitenkin todettiin pienenev‰n ja pienenev‰n kun havaintojen assimilaatiota malliin suoritettiin useita kertoja. T‰m‰ on merkki suotimen konvergenssista (katso edellinen osio) ja j‰rjestelm‰ss‰mme sit‰ korjataan pit‰m‰ll‰ taustan eksosf‰‰rin l‰mpˆtilakorjauksen varianssi vakiona (l‰hde: ket‰ mukaillen):
+\begin{equation} \label{inflation_eq}
+\mathbf{\Delta T_{ex}}_{, korj.} = \sqrt{\frac{s}{\sigma^2_{\mathbf{\Delta T_{ex}}}}} (\mathbf{\Delta T_{ex}} - E(\mathbf{\Delta T_{ex}})) + E(\mathbf{\Delta T_{ex}}),
+\end{equation}
+miss‰ $\mathbf{\Delta T_{ex}}$ on vektori kaikkien rypp‰‰n mallien arvoista, $E(\mathbf{\Delta T_{ex}})$ on vektorin keskim‰‰r‰inen arvo ja s on haluttu (vakiona pysyv‰) varianssi (niin sanottu inflaatioparametri). Paras arvo varianssille lˆydet‰‰n tarkastelemalla havaittujen arvojen sijaintia suhteessa mallirypp‰‰n vertailuarvoihin. Mik‰li kunkin havainnon kohdalla havainto ja mallirypp‰‰n N vastinetta asetetaan kasvavaan j‰rjestykseen, havainnon sijaintia suhteessa rypp‰‰seen kuvaa havaintoarvon j‰rjestysluku $k$ (l‰hde: heikin dyn IV). Mik‰li $k = 1$, havainto on pienempi kuin yksik‰‰n rypp‰‰n arvioista ja jos $k = N + 1$, kaikki rypp‰‰n vastineet ovat havaintoa pienempi‰. Sit‰vastoin v‰lill‰ $1 < k < N+1$ havainto osuu rypp‰‰n sis‰‰n. Laadukkaassa (ja harhattomassa) ennustusj‰rjestelm‰ss‰ j‰rjestysluku $k$ onkin tasaisesti jakautunut satunnaismuuttuja, sill‰ ‰‰rellisen otoksen luonteen johdosta havainto voi sijaita myˆs rypp‰‰n ulkopuolella. Assimiloimalla malliin vuosien 2002 ja 2004 havaintoja ja piirt‰m‰ll‰ mallin taustarypp‰‰n avulla laskettujen j‰rjestyslukujen histogrammeja, valittiin inflaatioparametrin sopivaksi arvoksi $s= 25~\mathrm{K}^2$. Lopullinen j‰rjestyslukujen histogrammin on esitetty Kuvassa \ref{fig:rank}; ryp‰s on hieman yli-dispersiivinen (havainto osuu useammin l‰helle rypp‰‰n keskusta kuin sen ulkopuolelle), mutta t‰m‰n tutkielman tarkoituksiin riitt‰v‰n hyvin kalibroitu. 
 
-
-
+\begin{figure}[t]
+\centering
+\includegraphics[scale = 0.6]{gradu_jarjestys}
+\caption{Mallin taustasta laskettujen havaintojen j‰rjestyslukujen jakauma vuosina 2002 ja 2004 yht‰lˆn (\ref{inflation_eq}) inflaatioparametrin arvolla $s = 25~\mathrm{K}^2$.}
+\label{fig:rank}
+\end{figure}
 
 %%% Oma teksti ennen t‰t‰.
 
