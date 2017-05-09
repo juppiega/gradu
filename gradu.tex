@@ -345,16 +345,94 @@ jossa
 \begin{align} \label{K_eq}
 \mathbf{K} = \mathbf{B H^T}(\mathbf{HBH^T} + \mathbf{R})^{-1}
 \end{align}
-on Kalmanin optimaalinen painomatriisi. $\mathbf{HBH^T}$ ilmaisee mallin taustan havaintoavaruuteen muunnettun kovarianssin ja $\mathbf{BH^T}$ muuttaa havaintojen ja mallin ennusteiden eron mallitilan korjaukseksi. Lisäksi Kalman-suotimessa mallitilan aikakehityksessä tarvittavan ennustusmallin lisäksi on oltava malli, joka kehittää analyysin kovarianssia $\mathbf{A}^n\mathbf{ = (I-KH)B}^{n}$ ajassa eteenpäin (lähde):
+on Kalmanin optimaalinen painomatriisi, $\mathbf{HBH^T}$ ilmaisee mallin ennustaman havaintojen virhekovarianssin, ja $\mathbf{BH^T}$ kovarianssin havaintojen ja mallitilan välillä. Mitä tarkempia havainnot ovat suhteessa taustaan, sitä enemmän painoa niille annetaan ja sitä lähemmäs havaintoja mallitila pyrkii; päinvastaisessa tilanteessa analyysi ei juurikaan poikkea taustasta.
+
+Lisäksi Kalman-suotimessa mallitilan aikakehityksessä tarvittavan ennustusmallin lisäksi on oltava malli, joka kehittää analyysin kovarianssia 
+\begin{equation} \label{analysis_cov_eq}
+\mathbf{A}^n\mathbf{ = (I-KH)B}^{n}
+\end{equation}
+ajassa eteenpäin (lähde):
 \begin{align} \label{time_evol_eq}
 \mathbf{B}^{n+1} = \mathbf{MA}^n\mathbf{M^T},
 \end{align}
 missä yläindeksi n viittaa aikaan ja $\mathbf{M} = \partial M / \partial \mathbf{x_a}$ on (epälineaarisen) mallin $M$ linearisoitu eli tangentti-lineaarinen malli. 
 
-Kalman-suodin ei kuitenkaan sovellu sellaisenaan käytettäväksi nykyaikaisissa säämalleissa, sillä taustan ja analyysin kovarianssimatriisit muodostuisivat niin suuriksi, ettei niitä nykyisillä tietokoneilla voisi käsitellä (lähde). Lisäksi tangentti-lineaaristen havainto-operaattorien ja mallin kehitystyö vaatii paljon aikaa, ennen kuin data-assimilaatio-järjestelmää voidaan hyödyntää (lähde). Yksinkertaisemmalle järjestelmälle 
+Kalman-suodin ei kuitenkaan sovellu sellaisenaan käytettäväksi nykyaikaisissa säämalleissa, sillä taustan ja analyysin kovarianssimatriisit muodostuisivat niin suuriksi, ettei niitä nykyisillä tietokoneilla voisi käsitellä (lähde). Lisäksi tangentti-lineaaristen havainto-operaattorien ja mallin kehitystyö vaatii paljon aikaa, ennen kuin data-assimilaatio-järjestelmää voidaan hyödyntää (lähde). Yksinkertaisemmalle ja tehokkaammalle järjestelmälle on siis tarvetta; (lähde Evensen 1994) esitteli suotimesta Monte Carlo -version, ensemble Kalman-suotimen (EnKF, englanniksi \textit{Ensemble Kalman Filter}). EnKF käyttää taustan kovarianssin arviointiin mallirypästä, joka on äärellinen otos mallitilojen todennäköisyysjakaumasta. Tämän otoskovarianssin avulla Kalmanin optimaalinen painomatriisi voidaan määrittää ja näin päivittää malliryppään tilat.
+
+Ryväs on kokoelma malleja, joiden tilat poikkeavat hieman toisistaan. Se voidaan esittää matriisina, jonka jokainen sarake (pituus m) edustaa yhtä mallitilaa ja jokainen rivi (pituus N) yhden mallin muuttujan tilan todennäköisyysjakaumaa (lähde):
+\begin{equation} \label{ens_eq}
+\mathbf{X} = \mathbf{[x_1,x_2,...,x_N] = [x_i]}.
+\end{equation}
+Ryppään mallitilojen oletetaan olevan todennäköisyysjakauman satunnaisotos, mutta tarkalleen ottaen peräkkäinen data-assimilaatio EnKF:lla tekee niiden tilat riippuviksi toisistaan. Tällöin mallin kovarianssi voidaan arvioida suoraan ryppään avulla:
+\begin{equation} \label{enscov_eq}
+\mathbf{C} = \frac{\mathbf{AA^T}}{N-1},
+\end{equation}
+missä $m \times N$ -matriisi 
+\begin{equation} \label{A_eq}
+[\mathbf{A}]_i = \mathbf{x}_i - E(\mathbf{X})
+\end{equation}
+ja rypäskeskiarvo
+\begin{equation} \label{E_eq}
+E(\mathbf{X}) = \frac{1}{N} \sum_{k=1}^{N} \mathbf{x_k}.
+\end{equation}
+
+Koska mallitilan lisäksi havainnot sisältävät epävarmuutta, kuvataan havaintovektoria $\mathbf{y}$ myös joukkona satunnaisotoksia:
+\begin{equation} \label{data_eq}
+\mathbf{Y} = \mathbf{[y_1,y_2,...,y_N] = [y_i]},~\mathbf{y_i = y + \epsilon_i},
+\end{equation}
+jossa Y on oxN -matriisi, jonka sarakeisiin on lisätty $N(0,\mathbf{R})$ -jakautuneita o-pituisia satunnaislukuvaktoreita $\mathbf{\epsilon_i}$. 
+
+Näiden avulla Kalman-suotimen analyysiyhtälö saa muodon:
+\begin{equation} \label{enkf_anal_eq}
+\mathbf{X_a = X_b + CH^T (HCH^T+R)^{-1} (Y-HX)}.
+\end{equation}
+Koska taustan kovarianssi arvioidaan jokaisella assimilaatiokierroksella yhtälöstä (\ref{enscov_eq}), ei yhtälön (\ref{time_evol_eq}) kaltaista kovarianssimatriisin kehitysyhtälöä enää tarvita. Kehittämällä jokaista ryppään mallia seuraavalle assimilaatiohetkelle, mahdollisesti hyvin epälineaarinen ennustusmalli kehittää samalla myös kovarianssia itseään ajassa eteenpäin. Näin ollen EnKF ei tarvitse tangentti-lineaarista mallia toimiakseen, mikä helpottaa algoritmin implementointia. 
+
+Yhtälössä (\ref{enkf_anal_eq}) on kuitenkin jäljellä tangentti-lineaarinen havainto-operaattori $\mathbf{H}$. Sijoittamalla analyysiyhtälöön kovarianssin lauseke (\ref{enscov_eq}) ja olettamalla taustan ja havaintojen virheet korreloimattomiksi, saadaan yhtälö muotoon (lähde):
+\begin{align} \label{ha_analysis_eq}
+\mathbf{X_a = X_b} + \frac{1}{N-1} \mathbf{A A^T H^T} (\frac{1}{N-1} \mathbf{H A A^T H^T+R)^{-1} (Y-HX)}\nonumber \\
+= \mathbf{X_b} + \frac{1}{N-1} \mathbf{A (HA)^T} (\frac{1}{N-1} \mathbf{HA(HA)^T  + R)^{-1} (Y-HX)}
+\end{align}
+Tässä matriisi $\mathbf{HA}$ voidaan lausua epälineaarisen havainto-operaattorin $H$ avulla:
+\begin{align} \label{HA_eq}
+[\mathbf{HA}]_i = \mathbf{H x_i} - \mathbf{H} \frac{1}{N} \sum_{k=1}^{N} \mathbf{x_k} \nonumber\\
+\cong H(\mathbf{x_i}) - \frac{1}{N} \sum_{k=1}^{N} H(\mathbf{x_k}).
+\end{align}
+Selvästi myös $\mathbf{[HX]}_i \cong H(\mathbf{x_i})$, joten yhtälö (\ref{HA_eq}) voidaan siis esittää ainoastaan $H$:n avulla. Näin ollen tarvetta tangentti-lineaarisille operaattoreille ei EnKF:ssa lainkaan ole. 
+
+Ensemble Kalman-suotimeen liittyy sen yksinkertaisesta implementaatiosta huolimatta joitain vaikeuksia. Suurimmat ongelmat liittyvät suotimen Monte Carlo -luonteeseen; kuinka voidaan varmistaa, että malliryväs on edustava otos järjestelmän tilan todennäköisyysjakaumasta? Ongelmat ovat suurimmillaan, kun ryppään koko $N$ on pieni. Jos malleja on liian vähän esittämään todennäköisyysjakauman vaihtelua, on järjestelmä alinäytteistetty (lähde). Alinäytteistys on voi johtaa tilanteeseen, jossa analyysin kovarianssia järjestelmällisesti aliarvioidaan (lähde Lorenc, 2003). Virhe analyysin kovarianssissa ilmenee virheenä seuraavan assimilaatiosyklin taustan kovarianssissa, jolloin havaintojen ja taustan kovarianssien suhde ei ole oikein ja näiden avulla tuotettu analyysi on virheellinen. 
+
+Yhtälön (\ref{analysis_cov_eq}) mukaisesti analyysin kovarianssi on taustan kovarianssia pienempi. Yhdessä alinäytteistyksen aiheuttaman järjestelmällisen aliarvion kanssa (lähde Hamill, 2001) tämä voi aiheuttaa suotimen konvergenssia, jossa malliryppään jäsenet lähestyvät ajan kuluessa toisiaan. Tällöin havaintojen kovariannsi suhteessa taustan kovarianssiin kasvaa ja havaintojen merkitys malliryppään päivityksessä käy lopulta hyvin pieneksi. Suodinkonvergenssia vastaan on EnKF-järjestelmissä usein menettely, joka keinotekoisesti kasvattaa analyysin tai taustan kovarianssia (lähde Anderson ja Anderson). Tässä työssä käytettyä kovarianssin kasvatusmenetelmää käsitellään tarkemmin seuraavassa osiossa.
+
+Kovarianssin pienenemisen lisäksi alinäytteistys aiheuttaa mallitilan kovarianssiin epäfysikaalista kohinaa eli niin sanottuja harhaanjohtavia korrelaatioita (lähde Hamill). Fysikaalisessa hilapisteavaruudessa toimivien mallien hilapisteiden arvot voivat näennäisesti korreloida keskenään, vaikka niiden välinen etäisyys olisi suuri. Koska kausaalinen yhteys hilapisteiden arvojen välillä pienenee pisteiden välisen etäisyyden funktiona, voi luonteeltaan globaalissa (kaikki havainnot vaikuttavat kaikkiin mallin muuttujiin) EnKF:ssa kehittyä tilanne, jossa kaukana hilapisteestä oleva havainto vaikuttaa epäfysikaalisen paljon hilapisteen analyysiin. Diskreeteissä hilamalleissa, jotka laskevat malliryppään avulla eksplisiittisen taustan kovarianssin, voidaan harhaanjohtavia korrelaatioita torjua pienentämällä hilapisteiden välistä kovarianssia jonkin funktion mukaisesti (lähde). Samanlainen menettely on mahdollista myös palloharmonisissa malleissa tekemällä oletuksia virheen isotrooppisuudesta (lähde) tai käyttäen pseudo-spketraalimenetelmää (lähde). Tässä työssä taustakovarianssin harhaanjohtavia korrelaatioita ei kuitenkaan yritetä korjeta.
+
+\subsection{Ensemble Kalman -suodin Iipponen-Laitinen -mallissa}
+
+Ensemble Kalman -suodinta on aiemmin hyödynnetty yläilmakehämallien data-assimilaatiossa (lähteitä). Tällöin kyseessä ovat kuitenkin olleet fysikaaliset mallit, jotka integroivat yläilmakehää kuvaavia primitiiviyhtälöitä ajassa eteenpäin. Puoli-empiirisiä malleja on sen sijaan korjattu sovittamalla havaintoihin funktiosovitus(esim. lähteet Doornbos ja HASDM), joka on kokonaan jättänyt huomiotta mallin taustan. Lisäksi aiemmat empiiristen mallien data-assimilaatiot ovat olleet täysin deterministisiä, kun taas EnKF antaa kuvauksen ilmakehän tilan todennäköisyysjakaumasta.
+
+Tässä työssä ilmakehämallin massatiheyttä korjataan (lähde Doornbos) esittämällä tavalla, jossa korjataan mallin ala- (130 km:ssa) ja ylärajan (eksosfääri) lämpötiloja. Tämä lämpötilaprofiilin muutos vaikuttaa kaikkien ilmakehän kaasulajien skaalauskorkeuksiin ja siten massatiheyteen vakiokorkeuspinnoilla. Mallin alarajalla absoluuttista lämpötilaa $\mathrm{T_0}$ ja sen pystysuuntaista gradienttia T' korjataan skalaarien $\mathrm{\Delta T_0}$ ja $\mathrm{\Delta T'}$ avulla:
+\begin{align} \label{lb_ass_eq}
+\mathrm{T_{0,a}} = \mathrm{T_{0,IL}} + \mathrm{\Delta T_0} \\
+\mathrm{T'}_= \mathrm{T'}_{IL} + \mathrm{\Delta T'}
+\end{align}
+Korjaukset ovat siis aina lisäyksiä korjaamattoman IL-mallin lämpötilakenttiin. 
+
+Koska lähes isotermisen keski- ja ylätermosfäärin lämpötilavaihtelut ovat suurempia kuin alatermosfäärissä \citep{emmert_2015}, on eksosfäärin lämpötilalla (malli ylärajalla) alareunan lämpötiloja suurempi vaikutus termosfäärin tiheyteen. Näin ollen eksosfäärin lämpötilakuvauksen on syytä olla alareunan korjauksia realistisempi. Eksosfäärin lämpötilaa korjataan käyttäen palloharmonista sarjaa:
+\begin{equation} \label{deltaTex_eq}
+\mathrm{\Delta T_{ex}} = a_0 + \sum_{n=1}^{N}\left [ \sum_{m=0}^{n} a_{nm} P_{nm}(sin(\phi)) cos(m \lambda ) + \sum_{m=0}^{n} b_{nm} P_{nm}(sin(\phi)) sin(m \lambda ) \right ],
+\end{equation}
+jossa $a_{nm}, b_{nm}$ ovat reaaliarvoisten palloharmonisten funktioiden kertoimia, $n$ on asteluku, $m$ on kertaluku (zonaalinen aaltoluku), $N$ on suurin aste- ja kertaluku (kolmiomainen katkaisu TN (lähde)), $\phi$ on leveyspiiri, $\lambda$ on aurinkoaika ja 
+\begin{equation} \label{legendre_eq}
+P_{nm}(x) = \frac{(-1)^m}{2^n n!} (1-x^2)^{m/2} \frac{d^{n+m}}{d x^{n+m}} (x^2 - 1)^n
+\end{equation}
+ovat normalisoimattomat Legendren liittofunktiot. Tässä työssä rajoitutaan palloharmoniseen korjaukseen T2, jonka avulla suuriamplitudinen päivä- ja puolipäivävaihtelu voidaan hyvin karakterisoida. Näin ollen mallitila koostuu yhteensä 11:a korjausparametristä (kaksi alarajalla ja yhdeksän ylärajalla).
 
 
-\subsection{EnKF IL-mallissa}
+
+
+
+
+
 
 %%% Oma teksti ennen tätä.
 
