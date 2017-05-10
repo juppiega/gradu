@@ -113,7 +113,7 @@ dp = -\rho g_0 dZ,
 miss‰ \textit{p} on ilmanpaine, $\rho$ on tiheys, \textit{Z} on geopotentiaalikorkeus ja \textit{g}\textsubscript{0} on putoamiskiihtyvyys mallin alarajalla 130 km korkeudella (l‰hde Emmert). Alailmakeh‰st‰ poiketen turbulenttinen sekoittuminen on pienen tiheyden takia termosf‰‰riss‰ hyvin pient‰ suhteessa diffuusioon. T‰llˆin raskaat kaasulajit (N\textsubscript{2} ja O\textsubscript{2}) ker‰‰ntyv‰t alatermosf‰‰riin (alle 200 km korkeudelle) ja kevyemm‰t (He ja O) termosf‰‰rin ylempiin osiin (ks. Kuva \ref{fig:emmert_tiheys}). 
 \begin{figure}[t]
 \centering
-%\includegraphics[scale = 0.4]{emmert_tiheys}
+\includegraphics[scale = 0.4]{emmert_tiheys}
 \caption{Termosf‰‰rin t‰rkeimpien kaasulajien lukum‰‰r‰tiheyksien globaalit keskiarvot korkeuden funktiona auringon maksimin aikaan. \citet{emmert_2015} Kuva 2(a).}
 \label{fig:emmert_tiheys}
 \end{figure}
@@ -169,7 +169,7 @@ Paramterien optimaaliset arvot m‰‰ritet‰‰n ep‰lineaariseen optimointiin suunnatu
 
 \begin{figure}[t]
 \includegraphics[scale = 0.65]{gradu_tiheys}
-\caption{IL-mallin ennuste yl‰ilmakeh‰n kokonaismassatiheydest‰ (yksikˆss‰ $kg/m^3$) leveyspiirin ja aurinkoajan funktiona kes‰kuussa 400 km:n korkeudella.}
+\caption{IL-mallin ennuste yl‰ilmakeh‰n kokonaismassatiheydest‰ (yksikˆss‰ $kg/m^3$) leveyspiirin ja aurinkoajan funktiona kes‰kuussa 400 km:n korkeudella. Keskiarvo pituuspiirien yli.}
 \label{fig:tiheys}
 \end{figure}
 
@@ -256,9 +256,9 @@ miss‰ yl‰indeksi M viittaa yl‰ilmakeh‰n tiheysmalliin (IL).
 
 K‰yt‰nnˆss‰ yl‰ilmakeh‰n tiheyden m‰‰ritys kaksirivisen elementtidatan avulla pit‰‰ sis‰ll‰‰n seuraavat vaiheet:
 \begin{enumerate}
-\item Valitaan kappale, jonka kiertoradalla ilmanvastusvoima on suuri muihin kiertorataa muuttaviin voimiin verrattuna.
+\item Valitaan kappale, jonka kiertoradalla ilmanvastusvoima on suuri s‰teilypaineeseen ja kolmannen kappaleen voimiin verrattuna.
 \item Ladataan internetist‰ (l‰hde Spacetrack) kappaleen kaksiriviset elementit riitt‰v‰n pitk‰lt‰ ajanjaksolta.
-\item Arvioidaan kappaleen todellinen ballistinen kerroin $B^T$, mik‰li sit‰ ei ole aiemmin tehty.
+\item Arvioidaan kappaleen todellinen ballistinen kerroin $B^T$ (katso seuraava osio), mik‰li sit‰ ei ole aiemmin tehty.
 \item Valitaan kaksi kaksirivist‰ elementti‰, joiden epookkien $t_i$ ja $t_k$ v‰lill‰ massatiheys m‰‰ritet‰‰n. 
 \item Lasketaan satelliitin paikka ja nopeus SGP4-mallin avulla hyvin tihe‰sti (t‰ss‰ tyˆss‰ kerran puolessa minuutissa) kahden epookin v‰lill‰.
 \item Lasketaan tuuliparametri F yht‰lˆst‰ (\ref{F_eq}) tai (\ref{F_approx_eq}) ja integroidaan yht‰lˆn (\ref{density_12_eq}) viivaintegraali numeerisesti (t‰ss‰ tyˆss‰ puolisuunnikass‰‰nnˆll‰ (l‰hde)).
@@ -441,11 +441,13 @@ Logaritmisen koordinaatiston oletetaan parantavan numeerista vakautta ja siten s
 
 Jokaisella assimilaatiosyklill‰ havainnoiksi valitaan ne kappaleet, joiden kaksirivisten elementtien epookkien keskiarvo $t_{ik}$ osuu assimilaatioikkunaan (aikav‰li, jolta havaintoja assimilaatiota varten ker‰t‰‰n). Koska kaksirivisen elementtidatan aikaresoluutio on noin kolme p‰iv‰‰, vaaditaan tiheyden m‰‰rityksess‰ k‰ytettyjen elementtien epookkien eroksi v‰hint‰‰n kolme p‰iv‰‰. Jotta yhteen assimilaatioon olisi k‰ytett‰viss‰ mahdollisimman paljon dataa, ja jotta aikaresoluutio olisi hyv‰, myˆs assimilaatioikkunan pituudeksi valittiin kolme p‰iv‰‰. Aina ennen seuraavaa assimilaatiosykli‰ asetetaan $t_i = t_k$ eli saman kappaleen tiheyden integrointia jatketaan siit‰, mihin edellisen syklin aikana on j‰‰ty. Kappaleista kuitenkin hyl‰t‰‰n ne, joiden keskiliike on pienentynyt. L‰hemmiss‰ tarkasteluissa todettiin, ett‰ muihin muuttujiin, kuten $B_i$:hin liittyv‰‰ eliminointia ei tarvinnut tehd‰, koska kaikki 45 kappaletta oli valittu siten, ett‰ ne antavat realistiselta vaikuttavaa tiheysinformaatiota (kun keskiliike kasvaa). 
 
-Mallirypp‰‰n kooksi valittiin N = 100 mallia, koska merkitt‰v‰‰ parannusta assimilaatioj‰rjestelm‰n suorituskyvyss‰ ei suuremmilla rypp‰ill‰ havaittu (ei n‰ytet‰). Rypp‰‰n kovarianssin kuitenkin todettiin pienenev‰n ja pienenev‰n kun havaintojen assimilaatiota malliin suoritettiin useita kertoja. T‰m‰ on merkki suotimen konvergenssista (katso edellinen osio) ja j‰rjestelm‰ss‰mme sit‰ korjataan pit‰m‰ll‰ taustan eksosf‰‰rin l‰mpˆtilakorjauksen varianssi vakiona (l‰hde: ket‰ mukaillen):
+Assimiloitavien havaintojen vastineet lasketaan mallitiloista ep‰lineaarisen havainto-operaattorin avulla. Havainto-operaattori lis‰‰ IL-mallin ala- ja yl‰rajan l‰mpˆtiloihin korjaukset (\ref{lb_ass_eq}) ja (\ref{deltaTex_eq}), laskee SGP4-kiertoratamallilla satelliitin paikan puolen minuutin v‰lein, muuttaa sen inertiaalikoordinaatistosta maantieteellisiin koordinaatteihin, m‰‰ritt‰‰ ilmakeh‰n tiheyden korjatulla IL-mallilla kiertoradalle lasketuissa pisteiss‰ ja palauttaa yht‰lˆn (\ref{density_13_eq}) mukaisesti painotetun tiheyden logaritmin.
+
+Mallirypp‰‰n kooksi valittiin N = 100 mallia, koska merkitt‰v‰‰ parannusta assimilaatioj‰rjestelm‰n suorituskyvyss‰ ei suuremmilla rypp‰ill‰ havaittu (ei n‰ytet‰). Malliryv‰s alustetaan arpomalla jokaiselle korjausparametrille N-kappaletta keskihajonnalla 100 K ($\mathrm{\Delta T'}$:lle 5 K/km) jakautunutta normaalijakauman satunnaislukuja. Rypp‰‰n kovarianssin kuitenkin todettiin pienenev‰n ja pienenev‰n kun havaintojen assimilaatiota malliin suoritettiin useita kertoja. T‰m‰ on merkki suotimen konvergenssista (katso edellinen osio) ja j‰rjestelm‰ss‰mme sit‰ korjataan pit‰m‰ll‰ taustan eksosf‰‰rin l‰mpˆtilakorjauksen varianssi vakiona (l‰hde: ket‰ mukaillen):
 \begin{equation} \label{inflation_eq}
 \mathbf{\Delta T_{ex}}_{, korj.} = \sqrt{\frac{s}{\sigma^2_{\mathbf{\Delta T_{ex}}}}} (\mathbf{\Delta T_{ex}} - E(\mathbf{\Delta T_{ex}})) + E(\mathbf{\Delta T_{ex}}),
 \end{equation}
-miss‰ $\mathbf{\Delta T_{ex}}$ on vektori kaikkien rypp‰‰n mallien arvoista, $E(\mathbf{\Delta T_{ex}})$ on vektorin keskim‰‰r‰inen arvo ja s on haluttu (vakiona pysyv‰) varianssi (niin sanottu inflaatioparametri). Paras arvo varianssille lˆydet‰‰n tarkastelemalla havaittujen arvojen sijaintia suhteessa mallirypp‰‰n vertailuarvoihin. Mik‰li kunkin havainnon kohdalla havainto ja mallirypp‰‰n N vastinetta asetetaan kasvavaan j‰rjestykseen, havainnon sijaintia suhteessa rypp‰‰seen kuvaa havaintoarvon j‰rjestysluku $k$ (l‰hde: heikin dyn IV). Mik‰li $k = 1$, havainto on pienempi kuin yksik‰‰n rypp‰‰n arvioista ja jos $k = N + 1$, kaikki rypp‰‰n vastineet ovat havaintoa pienempi‰. Sit‰vastoin v‰lill‰ $1 < k < N+1$ havainto osuu rypp‰‰n sis‰‰n. Laadukkaassa (ja harhattomassa) ennustusj‰rjestelm‰ss‰ j‰rjestysluku $k$ onkin tasaisesti jakautunut satunnaismuuttuja, sill‰ ‰‰rellisen otoksen luonteen johdosta havainto voi sijaita myˆs rypp‰‰n ulkopuolella. Assimiloimalla malliin vuosien 2002 ja 2004 havaintoja ja piirt‰m‰ll‰ mallin taustarypp‰‰n avulla laskettujen j‰rjestyslukujen histogrammeja, valittiin inflaatioparametrin sopivaksi arvoksi $s= 25~\mathrm{K}^2$. Lopullinen j‰rjestyslukujen histogrammin on esitetty Kuvassa \ref{fig:rank}; ryp‰s on hieman yli-dispersiivinen (havainto osuu useammin l‰helle rypp‰‰n keskusta kuin sen ulkopuolelle), mutta t‰m‰n tutkielman tarkoituksiin riitt‰v‰n hyvin kalibroitu. 
+miss‰ $\mathbf{\Delta T_{ex}}$ on vektori kaikkien rypp‰‰n mallien arvoista, $E(\mathbf{\Delta T_{ex}})$ on vektorin keskim‰‰r‰inen arvo ja s on haluttu (vakiona pysyv‰) varianssi (niin sanottu inflaatioparametri). 
 
 \begin{figure}[t]
 \centering
@@ -453,6 +455,24 @@ miss‰ $\mathbf{\Delta T_{ex}}$ on vektori kaikkien rypp‰‰n mallien arvoista, $E(
 \caption{Mallin taustasta laskettujen havaintojen j‰rjestyslukujen jakauma vuosina 2002 ja 2004 yht‰lˆn (\ref{inflation_eq}) inflaatioparametrin arvolla $s = 25~\mathrm{K}^2$.}
 \label{fig:rank}
 \end{figure}
+
+Paras arvo varianssille lˆydet‰‰n tarkastelemalla havaittujen arvojen sijaintia suhteessa mallirypp‰‰n vertailuarvoihin. Mik‰li kunkin havainnon kohdalla havainto ja mallirypp‰‰n N vastinetta asetetaan kasvavaan j‰rjestykseen, havainnon sijaintia suhteessa rypp‰‰seen kuvaa havaintoarvon j‰rjestysluku $k$ (l‰hde: heikin dyn IV). Mik‰li $k = 1$, havainto on pienempi kuin yksik‰‰n rypp‰‰n arvioista ja jos $k = N + 1$, kaikki rypp‰‰n vastineet ovat havaintoa pienempi‰. Sit‰vastoin v‰lill‰ $1 < k < N+1$ havainto osuu rypp‰‰n sis‰‰n. Laadukkaassa (ja harhattomassa) ennustusj‰rjestelm‰ss‰ j‰rjestysluku $k$ onkin tasaisesti jakautunut satunnaismuuttuja, sill‰ ‰‰rellisen otoksen luonteen johdosta havainto voi sijaita myˆs rypp‰‰n ulkopuolella. Assimiloimalla malliin vuosien 2002 ja 2004 havaintoja ja piirt‰m‰ll‰ mallin taustarypp‰‰n avulla laskettujen j‰rjestyslukujen histogrammeja, valittiin inflaatioparametrin sopivaksi arvoksi $s= 25~\mathrm{K}^2$. Lopullinen j‰rjestyslukujen histogrammin on esitetty Kuvassa \ref{fig:rank}; ryp‰s on hieman yli-dispersiivinen (havainto osuu useammin l‰helle rypp‰‰n keskusta kuin sen ulkopuolelle), mutta t‰m‰n tutkielman tarkoituksiin riitt‰v‰n hyvin kalibroitu. 
+
+\section{Tulokset}
+
+\section{Pohdinta}
+
+Kuvan (MIKƒ) ja Taulukon (MIKƒ) perusteella Ensemble Kalman -suodin kykenee tarkentamaan puoli-empiirisen yl‰ilmakeh‰mallin kuvausta termosf‰‰rin massatiheydest‰. Koska IL-malli esitt‰‰ termosf‰‰rin keskim‰‰r‰ist‰ tilaa, poikkeeaa sen ennuste v‰ist‰m‰tt‰ yl‰ilmakeh‰n todellisesta tilasta. EnKF kykenee kuitenkin korjaamaan t‰t‰ keskim‰‰r‰ist‰ tilaa ajan funktiona k‰ytt‰m‰ll‰ hyv‰kseen termosf‰‰rist‰ teht‰vi‰ havaintoja, ja n‰in mallin kuvaus saadaan paremmin vastaamaan dynaamisesti muuttuvaa ilmakeh‰‰. 
+
+Tarkasteluvuotena 2003 sek‰ auringon ett‰ geomagneettinen aktiivisuus oli suurta, jolloin termosf‰‰rin tila vaihteli nopeasti tuntien ja p‰ivien aikaskaalalla \citep{emmert_2015}. Suurin virhel‰hde empiirisiss‰ yl‰ilmakeh‰malleissa aiheutuu auringon ja geomagneettisen aktiivisuuden ilmakeh‰vaikutustan arviointiin k‰ytetyist‰ parametrisoinneista (ja etenkin niiss‰ k‰ytetyist‰ yksinkertaisista indekseist‰) (l‰hde). Mallien suorituskyky on heikoimmillaan n‰iden kahden aktiivisuuden ollessa korkeita, joten on perusteltua olettaa, ett‰ data-assimilaatiolla olisi vuonna 2003 huomattava vaikutus mallin suorituskykyyn. Toisaalta pakotteiden nopeat vaihtelut myˆs muuttavat mallin virhett‰ hyvin nopeasti. T‰st‰ huolimatta, mik‰li pakotteen aikakehitys tunnetaan tarkkaan, analyysin korjauskentt‰ voi parantaa mallin ennustetta viel‰ seuraavan kolmen p‰iv‰n assimilointi-ikkunan aikana. Koska auringon minimiss‰ termosf‰‰rin pakotteet muuttuvat hitaammin (l‰hde Bruinsman F30), on mahdollista, ett‰ t‰m‰ tulos yleistyy koskemaan myˆs minimiaikaa. T‰llˆin tosin mallin suorituskyky on myˆs parhaimmillaan, joten data-assimilaatio ei v‰ltt‰m‰tt‰ tarkenna analyysi‰ absoluuttisesti niin paljon kun auringon maksimin aikoihin vuonna 2003.
+
+Kuitenkaan oletus siit‰, ett‰ pakotteiden aikakehitys tunnettaisiin ei aina ole realistinen. Yhdysvaltain armeijan avaruustaistelulaboratorion HASDM-yl‰ilmakeh‰malli (l‰hde) kykenee tekem‰‰n massatiheysennusteita kolmen vuorokauden p‰‰h‰n k‰ytt‰m‰ll‰ hyv‰kseen ennusteita auringon UV-s‰teilyst‰ ja globaalia geomagneettista aktiivisuutta mittaavasta $\mathrm{k_p}$-indeksist‰. (l‰hde HASDM) osoittavat, ett‰  korkean auringon aktiivisuuden aikaan satelliittien kiertoradadan ennusteessa teht‰v‰ paikkavirhe (joka on suoraan verrannollinen tiheysmallin neliˆllisen keskiarvon virheeseen) ei merkitt‰v‰sti kasva ensimm‰isen 18:a tunnin aikana ja ennusteen laatu alkaa merkitt‰v‰sti heiket‰ vasta 36:n tunnin j‰lkeen. Kuitenkin viel‰ kolmen vuorokauden j‰lkeenkin paikkavirhe on 12\%:a parempi korjaamattomaan tiheysmalliin n‰hden. HASDM-malli k‰ytt‰‰ auringon UV-s‰teilyvuon ennustamiseen neuroverkkoja, jotka kykenev‰t tuottamaan luotettavan kolmen vuorokauden ennusteen (l‰hde SOLAR2000). N‰in ollen on mahdollista, ett‰ reaaliaikaisesti massatiheytt‰ korjaavassa data-assimilaatio-j‰rjestelm‰ss‰ voitaisiin k‰ytt‰‰ geofysikaalisten indeksien ennusteita ja viimeisint‰ analyysikentt‰‰ luomaan kuva massatiheyden aikakehityksest‰, joka olisi tarkempi kuin korjaamattomien mallien ennusteet. On kuitenkin ep‰selv‰‰, kuinka HASDM:n ennustusj‰rjestelm‰ toimii tilanteessa, jossa geomagneettinen aktiivisuus on suuri. Lis‰ksi on huomioitava, ett‰ HASDM k‰ytt‰‰ suurempaa m‰‰r‰‰ kappaleita ja hyˆdynt‰‰ suoraan NORAD:n salaisia tutkahavaintoja, mik‰ mahdollistaa tarkemman analyysin tekemisen. 
+
+Kaikkia HASDM-mallin satelliitteja ei voinut t‰ss‰ tyˆss‰ k‰ytt‰‰, sill‰ yksinkertaisella analyyttisell‰ SGP4-mallilla ei niiden rataa kyennyt riitt‰v‰n tarkkaan m‰‰ritt‰m‰‰n. L‰hes kaikki HASDM:n satelliitit, joiden kiertoaika oli yli 225 minuuttia ilmensiv‰t hyvin suurta ja satunnaista vaihtelua (jopa tekij‰ll‰ 10) yksitt‰isiss‰ ballistisissa kertoimissa $B_i$. SGP4-malli olettaa, ett‰ kolmannen kappaleen voimat ovat merkitt‰vi‰ kun kappaleen kiertojakso ylitt‰‰ 225 minuuttia (l‰hde), mutta on mahdollista, ett‰ t‰ss‰ tyˆss‰ k‰ytetty mallin julkinen versio ei laske n‰it‰ voimia aivan samalla tavalla kuin NORAD:n kiertoratasovituksissaan k‰ytt‰m‰ malli. N‰in ollen t‰m‰n tyˆn SGP4:n antama kappaleen kiertorata poikkeaisi havaitusta ja aiheuttaisi ep‰johtonmukaisuuden yht‰lˆn (\ref{Bi_eq}) keskiliikkeen ja viivaintegraalin v‰lille. On myˆs mahdollista, ett‰ tutkahavaintojen avulla m‰‰ritetyt kaksirivisten elementtien keskiliikkeet itsess‰‰n ovat virheelliset. Koska elementit eiv‰t sis‰ll‰ mit‰‰n virheinformaatiota, on lopullista syyt‰ kuitenkin vaikea selvitt‰‰. 
+
+
+
+\section{Johtop‰‰tˆkset}
 
 %%% Oma teksti ennen t‰t‰.
 
